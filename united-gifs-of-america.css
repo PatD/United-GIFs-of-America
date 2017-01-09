@@ -1,0 +1,38 @@
+footer{
+position: fixed;
+bottom:0;
+left: 0;
+right:0;
+}
+
+footer img{float:right;}
+
+body{background:url('const.jpg') top left;}
+path{stroke:blue}
+
+#stateGifHolder{max-width:100%;}
+
+header{padding-top:1em;}
+header h1{font-family: 'Fredericka the Great', cursive; font-size:48pt;text-align:center;text-shadow:0px 0px 0px;}
+header h1 span{color:red;}
+header h1 i{color:blue;font-style:normal;}
+
+header h2{font-family:'Julius Sans One', sans-serif;text-align:center;font-size:30px;}
+
+
+main h2 {font-family: 'Fredericka the Great', cursive; font-size:24pt;text-align:center;position: absolute;
+right: 270px;
+top: 34px;
+background:blue;color:#fff;
+padding:5px 10px;
+}
+
+main{margin-top:-20px;}
+main svg {margin-left:-20px;}
+
+small{position:fixed;bottom:0;float:left;}
+
+
+
+h5.modal-title{font-family: 'Fredericka the Great', cursive;font-size:1.75em;line-height:1em;}
+h5.modal-title span {color:red;}

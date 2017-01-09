@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
+<head>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 
@@ -12,51 +13,22 @@
   </title>
   
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Julius+Sans+One" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Julius+Sans+One">
+<link rel="stylesheet" href="united-gifs-of-america.css">
 
-
-
-
-<style>
-footer{
-    position: fixed;
-    bottom:0;
-    left: 0;
-    right:0;
-}
-
-footer img{float:right;}
-
-  body{background:url('const.jpg') top left;}
-  path{stroke:blue}
+<script>
+  (function(p,a,t,r,i,c,k){p['GoogleAnalyticsObject']=i;p[i]=p[i]||function(){
+  (p[i].q=p[i].q||[]).push(arguments)},p[i].l=1*new Date();c=a.createElement(t),
+  k=a.getElementsByTagName(t)[0];c.async=1;c.src=r;k.parentNode.insertBefore(c,k)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
   
-  #stateGifHolder{max-width:100%;}
-  
-  header{padding-top:1em;}
-  header h1{font-family: 'Fredericka the Great', cursive; font-size:48pt;text-align:center;text-shadow:0px 0px 0px;}
-  header h1 span{color:red;}
-  header h1 i{color:blue;font-style:normal;}
-  
-  header h2{font-family:'Julius Sans One', sans-serif;text-align:center;font-size:30px;}
- 
- 
-  main h2 {font-family: 'Fredericka the Great', cursive; font-size:24pt;text-align:center;position: absolute;
-    right: 270px;
-    top: 34px;
-    background:blue;color:#fff;
-    padding:5px 10px;
-  }
-    
-  main{margin-top:-20px;}
-  main svg {margin-left:-20px;}
-  
-  small{position:fixed;bottom:0;float:left;}
-</style>
-
+  ga('create', 'UA-90031604-1', 'auto');
+  ga('send', 'pageview');
+</script>
     
     
-  </head>
+</head>
   
   
 
@@ -78,7 +50,10 @@ footer img{float:right;}
     
   <h2 id="stateNameh2">State Name</h2>
   
-    <svg xmlns="http://www.w3.org/2000/svg" height="593px" width="100%">
+  
+  <!-- fill url(#favoriteStateBackgroundImage)  for stared -->
+  
+ <svg xmlns="http://www.w3.org/2000/svg" height="593px" width="100%">
    
   <defs>
       <filter id="dropshadow" height="130%">
@@ -89,6 +64,10 @@ footer img{float:right;}
           <feMergeNode in="SourceGraphic"/> 
         </feMerge>
       </filter>
+      
+      <pattern id="favoriteStateBackgroundImage" patternUnits="userSpaceOnUse" width="500" height="281">
+        <image xlink:href="big-waving-flag.gif" x="0" y="0" width="500" height="281" />
+      </pattern>
     </defs>
     
     <g id="SVGAMERICA" filter="url(#dropshadow)">
@@ -99,7 +78,6 @@ footer img{float:right;}
        d="m 956.31178,153.05085 -0.29118,-0.19412 0,0.29119 0.29118,-0.0971 z m -2.91189,-2.6207 0.67944,-0.29119 0,-0.38825 -0.67944,0.67944 z m 12.03583,-7.57092 -0.0971,-1.35889 -0.19412,-0.7765 0.29119,2.13539 z m -42.41659,-9.9975 -0.67944,0.29119 -5.5326,1.65007 -1.94126,0.67944 -2.23245,0.67944 -0.7765,0.29119 0,0.29119 0.29118,5.04728 0.29119,4.65903 0.29119,4.27078 0.48532,0.29119 1.74714,-0.48532 7.86211,-2.32951 0.19412,0.48531 13.97709,-5.33847 0.0971,0.19413 1.26182,-0.48532 4.4649,-1.74713 4.27078,5.14434 0,0 0.58238,-0.48531 0.29119,-1.45595 -0.0971,2.32952 0,0 0.97063,0 0.29119,1.16475 0.87357,1.65008 0,0 4.56197,-5.5326 3.78546,1.26182 0.87357,-1.94126 6.21204,-3.30015 -2.62071,-5.14435 0.67945,3.30015 -3.20309,2.42658 -3.59133,0.29119 -7.18267,-7.66799 -3.20309,-4.85315 3.20309,-3.39721 -3.30015,-0.19413 -1.35888,-3.20308 -0.0971,-0.19413 -5.53259,6.01791 -12.22996,4.07666 -3.97959,1.26182 0,0 z"
        fill="#fff"  />
     <path
-  
        id="MN"
        data-name="Minnesota"
        data-id="MN"
@@ -461,7 +439,6 @@ footer img{float:right;}
 
 <footer class="footer">
   <div class="container">
-    
     <small class="disclaimer"><strong class="text-danger">*</strong>Not actually official. <em>Yet.</em>  <a href="http://patrickdoran.com" target="_blank">Patrick Doran</a> is fighting on your behalf for this.</small>
     <a href="http://giphy.com/search/America" target="_blank"><img src="PoweredBy_200_Horizontal_Light-Backgrounds_With_Logo.gif" alt="Logo for Giffy" /></a>
   </div>
@@ -471,21 +448,35 @@ footer img{float:right;}
 
 
 <!-- Modal -->
-<div class="modal fade bd-state-modal-lg" id="stateModal" tabindex="-1" role="dialog" aria-labelledby="stateModalLabel" aria-hidden="true">
+<div class="modal bd-state-modal-lg" id="stateModal" tabindex="-1" role="dialog" aria-labelledby="stateModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="stateModal">Official State GIF for <span>state</span></h5>
+        <h5 class="modal-title">Official<span class="text-danger">*</span> State GIF for <span id="stateTitleforModal">this state</span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-
+        
+        
+         <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-8"><img src="#" id="stateGifHolder" alt="My state GIF!"></div>
+              <div class="col-md-4">
+                
+                <p id="myOfficialStateSaver">Save as my Official State Gif</p>
+                
+                
+                <em><span class="text-danger">*</span> Not official</em>
+              </div>
+            </div>
+          </div>
         <!-- Gif is dynamically loaded here -->
-        <img src="#" id="stateGifHolder">
+        
+    
 
-      </div>
+      </div><!-- /modal-body -->
 
     </div>
   </div>
@@ -498,128 +489,10 @@ footer img{float:right;}
 
 
 
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-
-
-
-
-
-
-
-
-<script>
-  // Waits for all content to be loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    // location of SVG map
-    const svgamericamap = document.getElementById("SVGAMERICA");
-    
-    // State name text node
-    var stateNameHeader = document.getElementById("stateNameh2");
-    
-    // Image where per-state-gif lands
-    var stateGifHolder = document.getElementById("stateGifHolder");
-  
-    // the states
-    var mapchild = svgamericamap.children;
-
-    // Loop through the states
-    for(var i = 0; i < mapchild.length; i++){
-
-
-    // Mouseover event handler
-      mapchild[i].addEventListener("mouseover", function(){
-        // Sets background color of state
-        this.setAttribute("fill","red");
-        
-        var stateFullName = this.getAttribute("data-name");
-        
-        // sets text header to state name
-        stateNameHeader.textContent = stateFullName;
-        
-      });
-      
-    // Mouseout event handler
-      mapchild[i].addEventListener("mouseout", function(){
-        this.setAttribute("fill","#fff");
-        
-         var stateFullName = this.getAttribute("data-name");
-        
-        // removes state name
-        stateNameHeader.textContent = " ";
-      });
-      
-      
-      // Event listener for click
-       mapchild[i].addEventListener("click", function(){
-         
-         // What the state is here:
-         var stateFullName = this.getAttribute("data-name");
-         //console.log(stateID)
-         
-          this.setAttribute("fill","blue");
-          
-          stateNameHeader.textContent = stateFullName;
-        
-          // pass name to getGif function
-         return getGif(stateFullName);
-        
-       });
-     
-    }; // for loop per dom element in map
-   
-    
-    
-    
-    
-    // Service that loads from Giffy.  Expects name of state as paramter
-    function getGif(stateFullName){
-      
-      const apiKey = "dc6zaTOxFJmzC";
-      var stateFullName = stateFullName;
-      
-      const loadGifs = new XMLHttpRequest();
-
-      loadGifs.onreadystatechange = function() {
-        
-        if (this.readyState == 4 && this.status == 200) {
-         
-          var returnedGifs = JSON.parse(this.responseText);
-          
-          // Thumbnail
-          var smallGif = returnedGifs.data[0].images.downsized.url;
-          
-          // Actual GIF
-          var mainGif = returnedGifs.data[0].images.original.url;
-           
-          // Sets SRC of image in Modal to value from GIFFY feed
-          stateGifHolder.setAttribute("src",mainGif);
-           
-          // Fires modal dialog box
-          $('#stateModal').modal('toggle')
-           
-          } // if
-          
-          else{
-            // Error handling
-            console.log("Waiting")
-          }
-        };
-    
-        
-        loadGifs.open("GET", "http://api.giphy.com/v1/gifs/search?q=" + stateFullName + "&api_key="+ apiKey +"&limit=1");
-        loadGifs.send();
-     }; // getgif
-    
-  
-  }); // DOM loaded
-  
-
-  
-</script>
-
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="united-gifs-of-america.js"></script>
 
 </body>
 </html>
