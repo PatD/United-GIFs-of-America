@@ -1,3 +1,5 @@
+
+
 // Save Button in Modal
 var saveButton = document.getElementById("myOfficialStateSaver");
 
@@ -12,14 +14,14 @@ var stateGifHolder = document.getElementById("stateGifHolder");
 var stateTitleforModal = document.getElementById("stateTitleforModal");
 
 // Loading GIF for modal
-var loadingGif = "loading-america.gif";
+const loadingGif = "loading-america.gif";
 
 
 
 // Default fills color of SVG Map
-var mapColor = "#fff";
-var mapColorHover = "#ff0000"
-var mapColorFavorite = "url(#favoriteStateBackgroundImage";
+const mapColor = "#fff";
+const mapColorHover = "#ff0000"
+const mapColorFavorite = "url(#favoriteStateBackgroundImage";
 
 
 // End user's Favorite State
@@ -50,6 +52,27 @@ if (!storageAvailable('localStorage')) {
 
 
 
+// Checks to see if there is anything in localStorage, and acts on it
+function onLoadState(){
+  var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
+  onLoadFavoriteStateNode.setAttribute("favorite", "true");
+  onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
+};
+
+
+
+// Remove any previously selected favorite state.
+function makeStateUnfavorite(){
+  var oldFavoriteStateID = localStorage.getItem('favoriteStateID');
+  var oldFavoriteStateNode = document.getElementById(oldFavoriteStateID);
+  
+  // Remove favorite attribute
+  oldFavoriteStateNode.removeAttribute("favorite");
+  
+  // Returns color to normal
+  oldFavoriteStateNode.setAttribute("fill", mapColor);
+};
+
 
 
 
@@ -59,10 +82,8 @@ function savemyState(passedStateName, passedStateID){
     // Adds event listener for clicking save
     saveButton.addEventListener("click", function handler(){
       
-      // Remove any previously selected favorite state
-      var oldFavoriteStateID = localStorage.getItem('favoriteStateID');
-      var oldFavoriteStateNode = document.getElementById(oldFavoriteStateID);
-      oldFavoriteStateNode.setAttribute("fill", mapColor);
+      // removes any existing favorite
+      makeStateUnfavorite();
     
       // If we leave this line in, we can only use the button once? 
       this.removeEventListener('click', handler);
@@ -75,18 +96,15 @@ function savemyState(passedStateName, passedStateID){
       var mySelectedStateID = document.getElementById(passedStateID);
       mySelectedStateID.setAttribute("fill", mapColorFavorite);
   
+      // This state we just selected to be favorite, add an attribute mark it so
+      mySelectedStateID.setAttribute("favorite", "true");
+  
     });
   
 };
 
 
-// Checks to see if there is anything in localStorage, and acts on it
-function onLoadState(){
 
-  var oldFavoriteStateNode = document.getElementById(myFavoriteStateID);
-  oldFavoriteStateNode.setAttribute("fill", mapColorFavorite);
-  
-};
 
 
 
@@ -105,11 +123,20 @@ function onLoadState(){
     // Loop through the states
     for(var i = 0; i < mapchild.length; i++){
 
+
+
+
+
+
     // Mouseover event handler
       mapchild[i].addEventListener("mouseover", function(){
         
           // Sets background color of state
-          this.setAttribute("fill",mapColorHover);
+          // if it's not our favorite
+          if(!this.hasAttribute("favorite")){
+            this.setAttribute("fill",mapColorHover);
+          };
+
           
           var stateFullName = this.getAttribute("data-name");
           
@@ -124,15 +151,14 @@ function onLoadState(){
       
       
       
-      
-      
-      
-      
+  
       
     // Mouseout event handler
       mapchild[i].addEventListener("mouseout", function(){
-        this.setAttribute("fill",mapColor);
-        
+        if(!this.hasAttribute("favorite")){
+          this.setAttribute("fill",mapColor);
+        };
+      
          var stateFullName = this.getAttribute("data-name");
         
         // removes state name from h2
