@@ -107,6 +107,56 @@ function savemyState(passedStateName, passedStateID){
 
 
 
+// URL for finding state
+// http://nominatim.openstreetmap.org/reverse?format=xml&lat=35.7787429714954&lon=-78.6602098644987&pdoran@gmail.com&zoom=8&format=json&json_callback=myGeoState
+
+
+
+var myLat;
+var myLong;
+var stateLookupService = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&json_callback=myGeoState&lat=" + myLat + "&lon=" + myLong;
+
+console.log(stateLookupService)
+
+// Check if we're on mobile
+
+
+
+
+
+// Get state by geolocation, or allow user to find it w/a link
+
+var options = {
+  enableHighAccuracy: false,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+function geosuccess(pos) {
+  var crd = pos.coords;
+
+  console.log('Your current position is:');
+  console.log(`Latitude : ${crd.latitude}`);
+  console.log(`Longitude: ${crd.longitude}`);
+  console.log(`More or less ${crd.accuracy} meters.`);
+};
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+};
+
+navigator.geolocation.getCurrentPosition(geosuccess, error, options);
+
+
+// pass lat  long to service
+
+// Make the click function 
+
+
+
+
+
+
 
 
 
