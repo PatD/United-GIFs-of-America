@@ -120,13 +120,15 @@ console.log(stateLookupService)
 
 // Check if we're on mobile
 */
-
-
+/*
 
 var loadState = new XMLHttpRequest();
 
 // Get state by geolocation, or allow user to find it w/a link
-function locateMyState(){
+var locateMyState = function(){
+  
+  var userHomeState;
+console.log("start")  
   
   function success(pos) {
     var myLat = pos.coords.latitude;
@@ -145,22 +147,103 @@ function locateMyState(){
 
 navigator.geolocation.getCurrentPosition(success, error)
 
-
   loadState.onreadystatechange = function(){
   
-  
-          if (this.readyState == 4 && this.status == 200) {
-            
-    var _returnedAddress =JSON.parse(this.responseText);
-    var usersHomeState = _returnedAddress.address.state
-    console.log(_returnedAddress.address.state);
-          };
-    return usersHomeState;
+    if (this.readyState == 4 && this.status == 200) {
+      var _returnedAddress =JSON.parse(this.responseText);
+      var usersHomeState = _returnedAddress.address.state;
+     // console.log(usersHomeState);
+     
+     return userHomeState;
+    };
+    return userHomeState;    
   };
-
-
+  
+  return userHomeState;
+console.log("end")
   
 };
+
+*/
+
+
+var getOurLocation = function(){
+  
+   function success(pos) {
+    var myLat = pos.coords.latitude;
+    var myLong = pos.coords.longitude;
+    var stateLookupService = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
+ 
+    loadState.open("GET",stateLookupService );
+    loadState.send();
+ 
+  };
+  
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+    
+  };
+
+navigator.geolocation.getCurrentPosition(success, error)
+  
+}
+
+
+
+var loadOurState = function(url) {
+  // Return a new promise.
+  return new Promise(function(resolve, reject) {
+    // Do the usual XHR stuff
+    var req = new XMLHttpRequest();
+    req.open('GET', url);
+
+    req.onload = function() {
+      // This is called even on 404 etc
+      // so check the status
+      if (req.status == 200) {
+        // Resolve the promise with the response text
+        resolve(req.response);
+      }
+      else {
+        // Otherwise reject with the status text
+        // which will hopefully be a meaningful error
+        reject(Error(req.statusText));
+      }
+    };
+
+    // Handle network errors
+    req.onerror = function() {
+      reject(Error("Network Error"));
+    };
+
+    // Make the request
+    req.send();
+  });
+}
+
+// Use it!
+loadOurState('http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=35.686558&lon=-78.43410779999999').then(function(response) {
+  console.log("Success!", response);
+}, function(error) {
+  console.error("Failed!", error);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -175,7 +258,11 @@ navigator.geolocation.getCurrentPosition(success, error)
     
     // Local Storage Getterer
     onLoadState();
-    
+    //locateMyState();
+  
+    var ourGPSstate = locateMyState();
+  
+  console.log("ourGPSstate is " + ourGPSstate);
   
     // Selects all the child nodes of SVGMAP
     var mapchild = svgamericamap.children;
