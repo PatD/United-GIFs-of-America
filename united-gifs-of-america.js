@@ -20,14 +20,14 @@ const loadingGif = "loading-america.gif";
 
 // Default fills color of SVG Map
 const mapColor = "#fff";
-const mapColorHover = "#ff0000"
+const mapColorHover = "#ff0000";
 const mapColorFavorite = "url(#favoriteStateBackgroundImage";
 
 
 // End user's Favorite State
 // localStorage sets this if the user set one in the last session
 var myFavoriteState = localStorage.favoriteState;
-var myFavoriteStateID = localStorage.favoriteStateID
+var myFavoriteStateID = localStorage.favoriteStateID;
 //console.log("global variable set: " + myFavoriteState + myFavoriteStateID);
 
 
@@ -110,7 +110,7 @@ function savemyState(passedStateName, passedStateID){
 // URL for finding state
 // http://nominatim.openstreetmap.org/reverse?format=xml&lat=35.7787429714954&lon=-78.6602098644987&pdoran@gmail.com&zoom=8&format=json&json_callback=myGeoState
 
-
+/*
 
 var myLat;
 var myLong;
@@ -119,38 +119,48 @@ var stateLookupService = "http://nominatim.openstreetmap.org/reverse?pdoran@gmai
 console.log(stateLookupService)
 
 // Check if we're on mobile
+*/
 
 
 
-
+var loadState = new XMLHttpRequest();
 
 // Get state by geolocation, or allow user to find it w/a link
+function locateMyState(){
+  
+  function success(pos) {
+    var myLat = pos.coords.latitude;
+    var myLong = pos.coords.longitude;
+    var stateLookupService = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
+ 
+    loadState.open("GET",stateLookupService );
+    loadState.send();
+ 
+  };
+  
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+    
+  };
 
-var options = {
-  enableHighAccuracy: false,
-  timeout: 5000,
-  maximumAge: 0
+navigator.geolocation.getCurrentPosition(success, error)
+
+
+  loadState.onreadystatechange = function(){
+  
+  
+          if (this.readyState == 4 && this.status == 200) {
+            
+    var _returnedAddress =JSON.parse(this.responseText);
+    var usersHomeState = _returnedAddress.address.state
+    console.log(_returnedAddress.address.state);
+          };
+    return usersHomeState;
+  };
+
+
+  
 };
-
-function geosuccess(pos) {
-  var crd = pos.coords;
-
-  console.log('Your current position is:');
-  console.log(`Latitude : ${crd.latitude}`);
-  console.log(`Longitude: ${crd.longitude}`);
-  console.log(`More or less ${crd.accuracy} meters.`);
-};
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-};
-
-navigator.geolocation.getCurrentPosition(geosuccess, error, options);
-
-
-// pass lat  long to service
-
-// Make the click function 
 
 
 
