@@ -167,29 +167,65 @@ console.log("end")
 */
 
 
+// Global location
+var myLat = 0;
+var myLong = 0;
+
+// 
 var getOurLocation = function(){
   
-   function success(pos) {
-    var myLat = pos.coords.latitude;
-    var myLong = pos.coords.longitude;
-    var stateLookupService = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
- 
-    loadState.open("GET",stateLookupService );
-    loadState.send();
+   function _success(pos) {
+    myLat = pos.coords.latitude;
+    myLong = pos.coords.longitude;
  
   };
   
-  function error(err) {
+  function _error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
     
   };
 
-navigator.geolocation.getCurrentPosition(success, error)
+  navigator.geolocation.getCurrentPosition(_success,_error);
+
+};  // getOurLocation
+
+
+
+
+
+
+
+var usersHomeState = "America";
+// Find our state, based on GPS coords
+var getOurState = function(){
   
-}
+    var url = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
+  
+    req = new XMLHttpRequest();
+    req.open('GET', url);
+    req.send();
+    
+    
+  req.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200) {
+      var _returnedAddress =JSON.parse(this.responseText);
+       console.log(_returnedAddress.address.state);
+      
+      usersHomeState = _returnedAddress.address.state;
+      
+    };
+  };
+  
+  
+};
 
 
 
+
+
+/*
+
+// helper function to load state via promise
 var loadOurState = function(url) {
   // Return a new promise.
   return new Promise(function(resolve, reject) {
@@ -200,7 +236,7 @@ var loadOurState = function(url) {
     req.onload = function() {
       // This is called even on 404 etc
       // so check the status
-      if (req.status == 200) {
+      if (req.status == 200 && myLat > 0) {
         // Resolve the promise with the response text
         resolve(req.response);
       }
@@ -222,14 +258,13 @@ var loadOurState = function(url) {
 }
 
 // Use it!
-loadOurState('http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=35.686558&lon=-78.43410779999999').then(function(response) {
+loadOurState('http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=' + myLat + '&lon=' + myLong).then(function(response) {
   console.log("Success!", response);
 }, function(error) {
   console.error("Failed!", error);
 });
 
-
-
+*/
 
 
 
@@ -258,12 +293,7 @@ loadOurState('http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8
     
     // Local Storage Getterer
     onLoadState();
-    //locateMyState();
-  
-    var ourGPSstate = locateMyState();
-  
-  console.log("ourGPSstate is " + ourGPSstate);
-  
+
     // Selects all the child nodes of SVGMAP
     var mapchild = svgamericamap.children;
     
