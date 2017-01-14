@@ -24,35 +24,15 @@ const mapColorHover = "#ff0000";
 const mapColorFavorite = "url(#favoriteStateBackgroundImage";
 
 
-// End user's Favorite State
-// localStorage sets this if the user set one in the last session
+// Global variable: End user's Favorite State
+  // localStorage sets this if the user set one in the last session
 var myFavoriteState = localStorage.favoriteState;
 var myFavoriteStateID = localStorage.favoriteStateID;
-//console.log("global variable set: " + myFavoriteState + myFavoriteStateID);
-
-
-// Helper function, checks to see if LocalStorage is?
-function storageAvailable(type) {
-	try {
-		var storage = window[type],
-			x = '__storage_test__';
-		storage.setItem(x, x);
-		storage.removeItem(x);
-		return true;
-	}
-	catch(e) {
-		return false;
-	}
-};
-
-// If it's not available, 
-if (!storageAvailable('localStorage')) {
-   console.log("no local storage");
-}
 
 
 
-// Checks to see if there is anything in localStorage, and acts on it
+
+// Function to see if there is anything in localStorage, and selects the state
 function onLoadState(){
   var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
   onLoadFavoriteStateNode.setAttribute("favorite", "true");
@@ -60,8 +40,7 @@ function onLoadState(){
 };
 
 
-
-// Remove any previously selected favorite state.
+// function to remove any previously selected favorite state.
 function makeStateUnfavorite(){
   var oldFavoriteStateID = localStorage.getItem('favoriteStateID');
   var oldFavoriteStateNode = document.getElementById(oldFavoriteStateID);
@@ -105,73 +84,12 @@ function savemyState(passedStateName, passedStateID){
 
 
 
-
-
-// URL for finding state
-// http://nominatim.openstreetmap.org/reverse?format=xml&lat=35.7787429714954&lon=-78.6602098644987&pdoran@gmail.com&zoom=8&format=json&json_callback=myGeoState
-
-/*
-
-var myLat;
-var myLong;
-var stateLookupService = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&json_callback=myGeoState&lat=" + myLat + "&lon=" + myLong;
-
-console.log(stateLookupService)
-
-// Check if we're on mobile
-*/
-/*
-
-var loadState = new XMLHttpRequest();
-
-// Get state by geolocation, or allow user to find it w/a link
-var locateMyState = function(){
-  
-  var userHomeState;
-console.log("start")  
-  
-  function success(pos) {
-    var myLat = pos.coords.latitude;
-    var myLong = pos.coords.longitude;
-    var stateLookupService = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
- 
-    loadState.open("GET",stateLookupService );
-    loadState.send();
- 
-  };
-  
-  function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-    
-  };
-
-navigator.geolocation.getCurrentPosition(success, error)
-
-  loadState.onreadystatechange = function(){
-  
-    if (this.readyState == 4 && this.status == 200) {
-      var _returnedAddress =JSON.parse(this.responseText);
-      var usersHomeState = _returnedAddress.address.state;
-     // console.log(usersHomeState);
-     
-     return userHomeState;
-    };
-    return userHomeState;    
-  };
-  
-  return userHomeState;
-console.log("end")
-  
-};
-
-*/
-
-
 // Global location
 var myLat = 0;
 var myLong = 0;
 
-// 
+
+// function that updates the myLat and myLong variable with GPS
 var getOurLocation = function(){
   
    function _success(pos) {
@@ -195,7 +113,10 @@ var getOurLocation = function(){
 
 
 
+/// Global my state variable
 var usersHomeState = "America";
+
+
 // Find our state, based on GPS coords
 var getOurState = function(){
   
@@ -223,85 +144,54 @@ var getOurState = function(){
 
 
 
-/*
-
-// helper function to load state via promise
-var loadOurState = function(url) {
-  // Return a new promise.
-  return new Promise(function(resolve, reject) {
-    // Do the usual XHR stuff
-    var req = new XMLHttpRequest();
-    req.open('GET', url);
-
-    req.onload = function() {
-      // This is called even on 404 etc
-      // so check the status
-      if (req.status == 200 && myLat > 0) {
-        // Resolve the promise with the response text
-        resolve(req.response);
-      }
-      else {
-        // Otherwise reject with the status text
-        // which will hopefully be a meaningful error
-        reject(Error(req.statusText));
-      }
-    };
-
-    // Handle network errors
-    req.onerror = function() {
-      reject(Error("Network Error"));
-    };
-
-    // Make the request
-    req.send();
-  });
-}
-
-// Use it!
-loadOurState('http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=' + myLat + '&lon=' + myLong).then(function(response) {
-  console.log("Success!", response);
-}, function(error) {
-  console.error("Failed!", error);
-});
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
   // Waits for all content to be loaded
   document.addEventListener('DOMContentLoaded', function() {
+   
+  
+   // Selects all the child nodes of SVGMAP
+    var mapchild = svgamericamap.children;
+
+    // on Mobile, loop through SVG map and make a dropdown
     
+    var stateArray = []
+    
+      // Dropdown where we want our states added
+    var fiftyStatesDropdown = document.getElementById("fiftyStatesDropdown");
+    
+    var makeMapMobile = function(){
+      
+      for(var i=0;i < mapchild.length; i++){
+
+        var _stateID = mapchild[i].getAttribute("data-id");
+        var _stateName = mapchild[i].getAttribute("data-name");
+       var newStateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
+        //var newStateOptionNode = "<option></option>"
+        
+        stateArray.push(newStateOptionNode);
+        
+        
+      };
+
+      var stateArrayString = stateArray.toString();
+      console.log(fiftyStatesDropdown)
+      fiftyStatesDropdown.innerHTML = stateArrayString;
+
+
+    };
+    
+    makeMapMobile();
+    
+    console.log(stateArray)
     // Local Storage Getterer
     onLoadState();
 
-    // Selects all the child nodes of SVGMAP
-    var mapchild = svgamericamap.children;
+
     
     // Loop through the states
     for(var i = 0; i < mapchild.length; i++){
-
-
-
 
 
 
