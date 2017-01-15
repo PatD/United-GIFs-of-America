@@ -1,21 +1,40 @@
+// Punch List
+/*
 
 
-// Save Button in Modal
-var saveButton = document.getElementById("myOfficialStateSaver");
+Bind event listener to dropdown
+Scope GPS to browsers with capability
+Scope GPS to x pixesl wide
+Resize + deacvitate map if scoped
+URL!
 
-// location of SVG map
-const svgamericamap = document.getElementById("SVGAMERICA");
 
-// State name text node
-var stateNameHeader = document.getElementById("stateNameh2");
 
-// Image + text where per-state-gif lands
-var stateGifHolder = document.getElementById("stateGifHolder");
-var stateTitleforModal = document.getElementById("stateTitleforModal");
+*/
+
+
+// DOM ELEMENTS
+
+  // Dropdown where we want our states added
+  var fiftyStatesDropdown = document.getElementById("fiftyStatesDropdown");
+
+  // Save Button in Modal
+  var saveButton = document.getElementById("myOfficialStateSaver");
+  
+  // location of SVG map
+  const svgamericamap = document.getElementById("SVGAMERICA");
+  
+  // State name text node
+  var stateNameHeader = document.getElementById("stateNameh2");
+  
+  // Image + text where per-state-gif lands
+  var stateGifHolder = document.getElementById("stateGifHolder");
+  var stateTitleforModal = document.getElementById("stateTitleforModal");
+
+
 
 // Loading GIF for modal
 const loadingGif = "loading-america.gif";
-
 
 
 // Default fills color of SVG Map
@@ -33,7 +52,7 @@ var myFavoriteStateID = localStorage.favoriteStateID;
 
 
 // Function to see if there is anything in localStorage, and selects the state
-function onLoadState(){
+var onLoadState = function(){
   var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
   onLoadFavoriteStateNode.setAttribute("favorite", "true");
   onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
@@ -100,7 +119,6 @@ var getOurLocation = function(){
   
   function _error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
-    
   };
 
   navigator.geolocation.getCurrentPosition(_success,_error);
@@ -126,7 +144,6 @@ var getOurState = function(){
     req.open('GET', url);
     req.send();
     
-    
   req.onreadystatechange = function(){
     if (this.readyState == 4 && this.status == 200) {
       var _returnedAddress =JSON.parse(this.responseText);
@@ -137,7 +154,59 @@ var getOurState = function(){
     };
   };
   
+};
+
+
+
+
+
+
+// Function to create a dropdown from the values of the SVG map
+var makeMapValuesIntoDropdown = function(){
   
+  // Selects all the child nodes of SVGMAP
+  var mapchild = svgamericamap.children;
+  
+  // Place our States in this Array  
+  var _stateArray = []
+  
+  for(var i=0;i < mapchild.length; i++){
+
+    var _stateID = mapchild[i].getAttribute("data-id");
+    var _stateName = mapchild[i].getAttribute("data-name");
+    var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
+    
+    _stateArray.push(_stateOptionNode);
+    
+  };
+
+  // Sorts array alphabetically
+  _stateArray.sort();
+
+  // converts array to String, puts it in the select 
+  var stateArrayString = _stateArray.toString();
+  fiftyStatesDropdown.innerHTML = stateArrayString;
+
+};
+
+
+
+
+// Loads state with dropdown
+var loadStateonSelect = function(){
+  
+  fiftyStatesDropdown.onchange = function(){
+  
+    var chosenoption=this.options[this.selectedIndex];
+    var chosenoptionState=this.options[this.selectedIndex].text;
+    
+    chosenoption.setAttribute("selected","selected");
+    
+    // fires function to load gif via modal
+    getGif(chosenoptionState);
+  
+  };
+
 };
 
 
@@ -147,53 +216,24 @@ var getOurState = function(){
 
 
 
-  // Waits for all content to be loaded
-  document.addEventListener('DOMContentLoaded', function() {
-   
-  
-   // Selects all the child nodes of SVGMAP
+
+
+
+
+
+ 
+    
+    
+var mapEventSetter = function(){
+
+    // Selects all the child nodes of SVGMAP
     var mapchild = svgamericamap.children;
-
-    // on Mobile, loop through SVG map and make a dropdown
-    
-    var stateArray = []
-    
-      // Dropdown where we want our states added
-    var fiftyStatesDropdown = document.getElementById("fiftyStatesDropdown");
-    
-    var makeMapMobile = function(){
-      
-      for(var i=0;i < mapchild.length; i++){
-
-        var _stateID = mapchild[i].getAttribute("data-id");
-        var _stateName = mapchild[i].getAttribute("data-name");
-       var newStateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
-        //var newStateOptionNode = "<option></option>"
-        
-        stateArray.push(newStateOptionNode);
-        
-        
-      };
-
-      var stateArrayString = stateArray.toString();
-      console.log(fiftyStatesDropdown)
-      fiftyStatesDropdown.innerHTML = stateArrayString;
-
-
-    };
-    
-    makeMapMobile();
-    
-    console.log(stateArray)
-    // Local Storage Getterer
-    onLoadState();
-
 
     
     // Loop through the states
     for(var i = 0; i < mapchild.length; i++){
-
-
+      
+  
 
     // Mouseover event handler
       mapchild[i].addEventListener("mouseover", function(){
@@ -258,8 +298,8 @@ var getOurState = function(){
        });
      
     }; // for loop per dom element in map
-   
-    
+
+};  
     
 
     
@@ -304,13 +344,27 @@ var getOurState = function(){
           
           else{
             // Error handling
-            console.log("Waiting");
+         //   console.log("Waiting");
           }
         };
     
         loadGifs.open("GET", "http://api.giphy.com/v1/gifs/search?q=" + stateFullName + "&api_key="+ apiKey +"&limit=1");
         loadGifs.send();
      }; // getgif
-    
-  
-  }); // DOM loaded
+
+
+
+
+
+
+
+// Waits for all content to be loaded
+  document.addEventListener('DOMContentLoaded', function() {
+   
+    // For mobile, makes a dropdown
+    makeMapValuesIntoDropdown();
+    mapEventSetter();
+    loadStateonSelect();
+
+    onLoadState();
+  }); // DOM loaded   
