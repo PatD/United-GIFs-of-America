@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Julius+Sans+One">
 <link rel="stylesheet" href="united-gifs-of-america.css">
 
-<script>
+<script>/*
   (function(p,a,t,r,i,c,k){p['GoogleAnalyticsObject']=i;p[i]=p[i]||function(){
   (p[i].q=p[i].q||[]).push(arguments)},p[i].l=1*new Date();c=a.createElement(t),
   k=a.getElementsByTagName(t)[0];c.async=1;c.src=r;k.parentNode.insertBefore(c,k)
@@ -51,8 +51,7 @@
   
   ga('create', 'UA-90031604-1', 'auto');
   ga('send', 'pageview');
-</script>
-    
+*/</script>
     
 </head>
   
@@ -61,24 +60,37 @@
 <body>
 
   <header class="container">
-    <img src="wavingflag.gif" alt="Waving Flag" style="float:left;width:100px" />
-    <img src="wavingflag.gif" alt="Another Waving Flag!" style="float:right;width:100px" />  
-    <h1>UNITED <span>GIFs</span> of <i>AMERICA</i></h1>
+    <img src="wavingflag.gif" class="flag" alt="Waving Flag" />
+    <img src="wavingflag.gif" class="flag" alt="Another Waving Flag!" />  
+    <h1>UNITED <abbr title="Graphic Interchange Format">GIFs</abbr> of <span>AMERICA</span></h1>
     <h2>Discover Your Official<span class="text-danger">*</span> State GIF</h2>
   </header> 
 
 
 
 
-
   <main id="main" class="container" aria-label="Content">
     
-    <h2 id="stateNameh2">State Name</h2>
+    <h3 id="stateNameh2">State Name</h3>
     
-    <select id="fiftyStatesDropdown" class="form-control"></select>
+    <!-- Dropdown used for mobile users -->
+    <div class="selectBoxHolder">
+      <label for="fiftyStatesDropdown">Pick your state:</label>
+      <select id="fiftyStatesDropdown" name="fiftyStatesDropdown" class="form-control"></select>
+      
+      
+      <label>Or locate with GPS</label>
+      <div class="col-md-4 text-center"> 
+        <button id="getGPScoords" type="button" class="btn btn-success">Find my State's GIF!</button>
+      </div>
+      
+      
+    </div>
+    
+  
   
   <svg xmlns="http://www.w3.org/2000/svg" height="593px" width="100%">
-   
+  
   <defs>
       <filter id="dropshadow" height="130%">
         <feGaussianBlur in="SourceAlpha" stdDeviation="2"/> 

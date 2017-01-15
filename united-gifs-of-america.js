@@ -33,14 +33,14 @@ URL!
 
 
 
-// Loading GIF for modal
-const loadingGif = "loading-america.gif";
-
-
-// Default fills color of SVG Map
-const mapColor = "#fff";
-const mapColorHover = "#ff0000";
-const mapColorFavorite = "url(#favoriteStateBackgroundImage";
+  // Loading GIF for modal
+  const loadingGif = "loading-america.gif";
+  
+  
+  // Default fills color of SVG Map
+  const mapColor = "#fff";
+  const mapColorHover = "#ff0000";
+  const mapColorFavorite = "url(#favoriteStateBackgroundImage";
 
 
 // Global variable: End user's Favorite State
@@ -337,8 +337,7 @@ var mapEventSetter = function(){
           // Fires modal dialog box
           $('#stateModal').modal('show')
           
-          
-      
+        
            
           } // if
           
