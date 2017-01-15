@@ -1,8 +1,8 @@
 // Punch List
 /*
 
-
-Bind event listener to dropdown
+tie gps button to lcoation getterer
+check if there's an onclick to use instead of event listener for svg map
 Scope GPS to browsers with capability
 Scope GPS to x pixesl wide
 Resize + deacvitate map if scoped
@@ -40,7 +40,7 @@ URL!
   // Default fills color of SVG Map
   const mapColor = "#fff";
   const mapColorHover = "#ff0000";
-  const mapColorFavorite = "url(#favoriteStateBackgroundImage";
+  const mapColorFavorite = "url(#favoriteStateBackgroundImage)";
 
 
 // Global variable: End user's Favorite State
@@ -106,8 +106,11 @@ function savemyState(passedStateName, passedStateID){
 // Global location
 var myLat = 0;
 var myLong = 0;
+/// Global my state variable
+var usersHomeState = "America";
 
 
+/*
 // function that updates the myLat and myLong variable with GPS
 var getOurLocation = function(){
   
@@ -121,18 +124,53 @@ var getOurLocation = function(){
     console.warn(`ERROR(${err.code}): ${err.message}`);
   };
 
-  navigator.geolocation.getCurrentPosition(_success,_error);
+  navigator.geolocation.getCurrentPosition(_success,_error,{timeout:10000});
 
 };  // getOurLocation
 
 
+*/
 
 
 
 
 
-/// Global my state variable
-var usersHomeState = "America";
+// Helper function to find our location.
+// Callback returns lat and Long
+var getOurLocation = function(loc) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+            console.log(position);
+        var returnValue = {
+     
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
+
+        //  return loc with our coords
+        loc(returnValue);
+      
+      });
+};
+
+
+// Here you pass a callback function as a parameter to `updateCoordinate`.
+getOurLocation(function (loc) {
+  // sets global variables from returned vals
+  myLat = loc.latitude;
+  myLong = loc.longitude;
+  getOurState();
+
+});
+
+
+
+
+
+
+
+
+
 
 
 // Find our state, based on GPS coords
@@ -150,10 +188,12 @@ var getOurState = function(){
        console.log(_returnedAddress.address.state);
       
       usersHomeState = _returnedAddress.address.state;
-      
+        getGif(usersHomeState)
     };
   };
   
+  
+
 };
 
 
