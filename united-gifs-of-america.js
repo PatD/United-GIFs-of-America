@@ -15,6 +15,10 @@ URL!
 
 // DOM ELEMENTS
 
+
+  // About link
+  var aboutLink = document.getElementById("aboutLink");
+
   // Dropdown where we want our states added
   var fiftyStatesDropdown = document.getElementById("fiftyStatesDropdown");
 
@@ -138,6 +142,9 @@ var getOurLocation = function(){
 // Helper function to find our location.
 // Callback returns lat and Long
 var getOurLocation = function(loc) {
+  
+  if(document.documentElement.clientWidth	 < 640 && navigator.geolocation){
+  
     navigator.geolocation.getCurrentPosition(
       function (position) {
             console.log(position);
@@ -151,15 +158,22 @@ var getOurLocation = function(loc) {
         loc(returnValue);
       
       });
+      
+  }
+  else{
+    console.log("Error in Geolocation, or yer screen's too big");
+  }
+    
 };
 
 
 // Here you pass a callback function as a parameter to `updateCoordinate`.
 getOurLocation(function (loc) {
-  // sets global variables from returned vals
-  myLat = loc.latitude;
-  myLong = loc.longitude;
-  getOurState();
+  
+    // sets global variables from returned vals
+    myLat = loc.latitude;
+    myLong = loc.longitude;
+    getOurState();
 
 });
 
@@ -361,7 +375,7 @@ var mapEventSetter = function(){
           var returnedGifs = JSON.parse(this.responseText);
           
           // Thumbnail
-          var smallGif = returnedGifs.data[0].images.downsized.url;
+          // var smallGif = returnedGifs.data[0].images.downsized.url;
           
           // Actual GIF
           var mainGif = returnedGifs.data[0].images.original.url;
@@ -396,6 +410,24 @@ var mapEventSetter = function(){
 
 
 
+
+// Open about modal
+// Uses Bootstrap modal 
+    
+var openAboutModal = function(){
+  aboutLink.addEventListener("click", function(){
+    $('#aboutModal').modal('show')
+  });  
+};
+
+
+
+
+
+
+
+
+
 // Waits for all content to be loaded
   document.addEventListener('DOMContentLoaded', function() {
    
@@ -403,6 +435,6 @@ var mapEventSetter = function(){
     makeMapValuesIntoDropdown();
     mapEventSetter();
     loadStateonSelect();
-
+    openAboutModal();
     onLoadState();
   }); // DOM loaded   

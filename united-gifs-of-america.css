@@ -109,7 +109,8 @@ footer img{
 
 
 
-small{position:fixed;bottom:0;float:left;}
+small{position:fixed;bottom:10px;float:left;}
+small a, small .text-primary{text-decoration:underline;cursor:pointer;}
 
 
 
