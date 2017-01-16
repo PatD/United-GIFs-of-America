@@ -80,6 +80,7 @@ main label{
 
 main svg {margin-left:-20px;}
 
+main g {cursor:pointer;}
 
 path{stroke:blue}
 

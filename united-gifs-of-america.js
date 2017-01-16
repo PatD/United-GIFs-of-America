@@ -1,6 +1,8 @@
 // Punch List
 /*
 
+
+onloadstate function = make select dropdown for mobile
 tie gps button to lcoation getterer
 check if there's an onclick to use instead of event listener for svg map
 Scope GPS to browsers with capability
@@ -16,6 +18,13 @@ URL!
 // DOM ELEMENTS
 
 
+// Global location
+var myLat = 0;
+var myLong = 0;
+/// Global my state variable
+var usersHomeState = "America";
+
+
   // About link
   var aboutLink = document.getElementById("aboutLink");
 
@@ -27,6 +36,9 @@ URL!
   
   // location of SVG map
   const svgamericamap = document.getElementById("SVGAMERICA");
+  
+  // Selects all the child nodes of SVGMAP
+  var mapchild = svgamericamap.children;
   
   // State name text node
   var stateNameHeader = document.getElementById("stateNameHeader");
@@ -55,7 +67,7 @@ var myFavoriteStateID = localStorage.favoriteStateID;
 
 
 
-// Function to see if there is anything in localStorage, and selects the state
+// Function: Checks if state is in localStorage, and selects the state on map
 var onLoadState = function(){
   var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
   onLoadFavoriteStateNode.setAttribute("favorite", "true");
@@ -63,8 +75,8 @@ var onLoadState = function(){
 };
 
 
-// function to remove any previously selected favorite state.
-function makeStateUnfavorite(){
+// Function: removes any previously selected favorite state.
+var makeStateUnfavorite = function(){
   var oldFavoriteStateID = localStorage.getItem('favoriteStateID');
   var oldFavoriteStateNode = document.getElementById(oldFavoriteStateID);
   
@@ -77,9 +89,8 @@ function makeStateUnfavorite(){
 
 
 
-
-// function to save selected state to myState variable, and to local storage
-function savemyState(passedStateName, passedStateID){
+// Function: Saves selected state to local storage. Updates map.
+var savemyState = function(passedStateName, passedStateID){
   
     // Adds event listener for clicking save
     saveButton.addEventListener("click", function handler(){
@@ -104,37 +115,6 @@ function savemyState(passedStateName, passedStateID){
     });
   
 };
-
-
-
-// Global location
-var myLat = 0;
-var myLong = 0;
-/// Global my state variable
-var usersHomeState = "America";
-
-
-/*
-// function that updates the myLat and myLong variable with GPS
-var getOurLocation = function(){
-  
-   function _success(pos) {
-    myLat = pos.coords.latitude;
-    myLong = pos.coords.longitude;
- 
-  };
-  
-  function _error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-  };
-
-  navigator.geolocation.getCurrentPosition(_success,_error,{timeout:10000});
-
-};  // getOurLocation
-
-
-*/
-
 
 
 
@@ -167,35 +147,18 @@ var getOurLocation = function(loc) {
 };
 
 
-// Here you pass a callback function as a parameter to `updateCoordinate`.
-getOurLocation(function (loc) {
-  
-    // sets global variables from returned vals
-    myLat = loc.latitude;
-    myLong = loc.longitude;
-    getOurState();
-
-});
-
-
-
-
-
-
-
-
-
-
 
 // Find our state, based on GPS coords
+// Uses OpenStreetMap service
+// Relies on global myLat and myLat
 var getOurState = function(){
   
-    var url = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
+  var url = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
+
+  req = new XMLHttpRequest();
+  req.open('GET', url);
+  req.send();
   
-    req = new XMLHttpRequest();
-    req.open('GET', url);
-    req.send();
-    
   req.onreadystatechange = function(){
     if (this.readyState == 4 && this.status == 200) {
       var _returnedAddress =JSON.parse(this.responseText);
@@ -211,26 +174,22 @@ var getOurState = function(){
 
 
 
-
-
-
 // Function to create a dropdown from the values of the SVG map
 var makeMapValuesIntoDropdown = function(){
   
-  // Selects all the child nodes of SVGMAP
-  var mapchild = svgamericamap.children;
+
+  // Place our States in this Array
+  var _stateArray = [];
   
-  // Place our States in this Array  
-  var _stateArray = []
-  
+  // Loops through each state, gathers ID and name, puts in an <option> tag
   for(var i=0;i < mapchild.length; i++){
 
     var _stateID = mapchild[i].getAttribute("data-id");
     var _stateName = mapchild[i].getAttribute("data-name");
     var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
-    
+   
+    //  Adds <options> to _stateArray 
     _stateArray.push(_stateOptionNode);
-    
   };
 
   // Sorts array alphabetically
@@ -239,13 +198,10 @@ var makeMapValuesIntoDropdown = function(){
   // converts array to String, puts it in the select 
   var stateArrayString = _stateArray.toString();
   fiftyStatesDropdown.innerHTML = stateArrayString;
-
 };
 
 
-
-
-// Loads state with dropdown
+// Function: Fires GIF modal for the selected state when selected on dropdown
 var loadStateonSelect = function(){
   
   fiftyStatesDropdown.onchange = function(){
@@ -257,9 +213,7 @@ var loadStateonSelect = function(){
     
     // fires function to load gif via modal
     getGif(chosenoptionState);
-  
   };
-
 };
 
 
@@ -267,26 +221,12 @@ var loadStateonSelect = function(){
 
 
 
-
-
-
-
-
-
-
  
-    
-    
+// Function: Handles Map hover, click, loading modal
 var mapEventSetter = function(){
-
-    // Selects all the child nodes of SVGMAP
-    var mapchild = svgamericamap.children;
-
     
     // Loop through the states
     for(var i = 0; i < mapchild.length; i++){
-      
-  
 
     // Mouseover event handler
       mapchild[i].addEventListener("mouseover", function(){
@@ -297,21 +237,17 @@ var mapEventSetter = function(){
             this.setAttribute("fill",mapColorHover);
           };
 
-          
           var stateFullName = this.getAttribute("data-name");
           
           // sets text header to state name
           stateNameHeader.textContent = stateFullName;
           
           // Clears already loaded GIF if there is one
-          // So it doesn't show up accidentally for fast-clickers
-          stateGifHolder.setAttribute("src", loadingGif);
-        
+          // stateGifHolder.setAttribute("src", loadingGif);
+      
       }); // End mouseover function
       
       
-      
-  
       
     // Mouseout event handler
       mapchild[i].addEventListener("mouseout", function(){
@@ -319,7 +255,7 @@ var mapEventSetter = function(){
           this.setAttribute("fill",mapColor);
         };
       
-         var stateFullName = this.getAttribute("data-name");
+        var stateFullName = this.getAttribute("data-name");
         
         // removes state name from h2
         stateNameHeader.textContent = "";
@@ -328,7 +264,7 @@ var mapEventSetter = function(){
       
       
       // Event listener for click
-       mapchild[i].addEventListener("click", function(){
+      mapchild[i].addEventListener("click", function(){
          
         // Clears already loaded GIF if there is one
         // So it doesn't show up accidentally for fast-clickers
@@ -338,15 +274,15 @@ var mapEventSetter = function(){
         var stateFullName = this.getAttribute("data-name");
         var stateID = this.getAttribute("data-id");
          
+        // pass name to getGif function
+        getGif(stateFullName);
+        
         this.setAttribute("fill",mapColorHover);
           
-          stateNameHeader.textContent = stateFullName;
+        stateNameHeader.textContent = stateFullName;
         
-          // Adds event listener for the state
-          savemyState(stateFullName,stateID);
-        
-          // pass name to getGif function
-         return getGif(stateFullName);
+        // Adds event listener for save the state
+        savemyState(stateFullName,stateID);
         
        });
      
@@ -432,7 +368,22 @@ var openAboutModal = function(){
   document.addEventListener('DOMContentLoaded', function() {
    
     // For mobile, makes a dropdown
+    // Need actually make this mobile only
     makeMapValuesIntoDropdown();
+    
+    // Here you pass a callback function as a parameter to `updateCoordinate`.
+    getOurLocation(function (loc) {
+      
+        // sets global variables from returned vals
+        myLat = loc.latitude;
+        myLong = loc.longitude;
+        getOurState();
+    
+    });
+
+
+    
+    
     mapEventSetter();
     loadStateonSelect();
     openAboutModal();
