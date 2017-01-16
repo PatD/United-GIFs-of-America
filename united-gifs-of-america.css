@@ -42,13 +42,15 @@ h2{
 }
 
 
-#stateNameh2{
-  display: none;
+/* Blue box that holds state name on hover */
+#stateNameHeader {font-family: 'Fredericka the Great', cursive; font-size:24pt;text-align:center;position: absolute;
+  right: 270px;
+  top: 34px;
+  background:blue;color:#fff;
+  padding:5px 10px;
 }
 
-main g{
-  display: none;
-}
+
 
 /* SVG just to hold the background image on mobile 
 main svg{
@@ -76,6 +78,13 @@ main label{
 
 
 
+main svg {margin-left:-20px;}
+
+
+path{stroke:blue}
+
+
+
 /* Fixed footer */
 footer{
   position: fixed;
@@ -100,7 +109,6 @@ footer img{
 
 
 
-
 small{position:fixed;bottom:0;float:left;}
 
 
@@ -110,24 +118,44 @@ h5.modal-title span {color:red;}
 
 
 
-/*
-main svg {margin-left:-20px;}
 
 
-path{stroke:blue}
 
-#stateNameh2{
-  display:block;
+
+
+
+@media (min-width: 768px){
+  /* Bigger title */
+  h1{font-size:3.7em}
+  
+  h2{font-size:2em;}
+  
+  .flag {position:relative;top:0;width:10%;}
+  .flag:first-child{
+  float:left;}
+
+.flag:last-of-type{
+  float:right;}
+  
+  main{top:-20px;}
+  
 }
+
+
+
+
+
+
+
+
+
+
+/*
+
 
 header img{float:left;width:100px;}
 
 main{margin-top:-20px;}
 
-main h3 {font-family: 'Fredericka the Great', cursive; font-size:24pt;text-align:center;position: absolute;
-right: 270px;
-top: 34px;
-background:blue;color:#fff;
-padding:5px 10px;
-}
+
 */

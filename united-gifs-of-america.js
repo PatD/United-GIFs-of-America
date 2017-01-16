@@ -25,7 +25,7 @@ URL!
   const svgamericamap = document.getElementById("SVGAMERICA");
   
   // State name text node
-  var stateNameHeader = document.getElementById("stateNameh2");
+  var stateNameHeader = document.getElementById("stateNameHeader");
   
   // Image + text where per-state-gif lands
   var stateGifHolder = document.getElementById("stateGifHolder");
@@ -188,11 +188,10 @@ var getOurState = function(){
        console.log(_returnedAddress.address.state);
       
       usersHomeState = _returnedAddress.address.state;
-        getGif(usersHomeState)
+        getGif(usersHomeState);
+        
     };
   };
-  
-  
 
 };
 
