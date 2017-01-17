@@ -2,14 +2,9 @@
 /*
 
 
-onloadstate function = make select dropdown for mobile
-tie gps button to lcoation getterer
-check if there's an onclick to use instead of event listener for svg map
-Scope GPS to browsers with capability
-Scope GPS to x pixesl wide
-Resize + deacvitate map if scoped
-URL!
+makeMapValuesIntoDropdown = load mobile only
 
+Update URL with state
 
 
 */
@@ -123,6 +118,12 @@ var savemyState = function(passedStateName, passedStateID){
 // Callback returns lat and Long
 var getOurLocation = function(loc) {
   
+  // Green GPS button
+  var getGPScoordsButton = document.getElementById("getGPScoordsButton");
+  
+  getGPScoordsButton.addEventListener("click",function(){ 
+  
+  
   if(document.documentElement.clientWidth	 < 640 && navigator.geolocation){
   
     navigator.geolocation.getCurrentPosition(
@@ -138,12 +139,12 @@ var getOurLocation = function(loc) {
         loc(returnValue);
       
       });
-      
   }
   else{
     console.log("Error in Geolocation, or yer screen's too big");
   }
-    
+  
+ });  // event listener
 };
 
 
@@ -291,59 +292,48 @@ var mapEventSetter = function(){
 };  
     
 
+  
     
     
+  // Service that loads from Giffy.  Expects name of state as paramter
+  // Also handles modal
+  
+  var getGif = function(stateFullName){
     
-    
-    // Service that loads from Giffy.  Expects name of state as paramter
-    // Also handles modal
-    
-    var getGif = function(stateFullName){
+    const apiKey = "dc6zaTOxFJmzC";
+    var stateFullName = stateFullName;
+    const loadGifs = new XMLHttpRequest();
+
+    loadGifs.onreadystatechange = function() {
       
-      const apiKey = "dc6zaTOxFJmzC";
-      var stateFullName = stateFullName;
-      const loadGifs = new XMLHttpRequest();
-
-      loadGifs.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+       
+        var returnedGifs = JSON.parse(this.responseText);
         
-        if (this.readyState == 4 && this.status == 200) {
+        // Actual GIF
+        var mainGif = returnedGifs.data[0].images.original.url;
+      
+        // Title in modal:
+        stateTitleforModal.innerHTML=stateFullName;
          
-          var returnedGifs = JSON.parse(this.responseText);
-          
-          // Thumbnail
-          // var smallGif = returnedGifs.data[0].images.downsized.url;
-          
-          // Actual GIF
-          var mainGif = returnedGifs.data[0].images.original.url;
+        // Sets SRC of image in Modal to value from GIFFY feed
+        stateGifHolder.setAttribute("src",mainGif);
+         
+        // Fires modal dialog box
+        $('#stateModal').modal('show')
         
-          
-          // Title in modal:
-          stateTitleforModal.innerHTML=stateFullName;
-           
-          // Sets SRC of image in Modal to value from GIFFY feed
-          stateGifHolder.setAttribute("src",mainGif);
-           
-          // Fires modal dialog box
-          $('#stateModal').modal('show')
-          
+      
+        } // if
         
-           
-          } // if
-          
-          else{
-            // Error handling
-         //   console.log("Waiting");
-          }
-        };
-    
-        loadGifs.open("GET", "http://api.giphy.com/v1/gifs/search?q=" + stateFullName + "&api_key="+ apiKey +"&limit=1");
-        loadGifs.send();
-     }; // getgif
-
-
-
-
-
+        else{
+          // Error handling
+         console.log("Loading GIF from giphy");
+        }
+      };
+  
+      loadGifs.open("GET", "http://api.giphy.com/v1/gifs/search?q=" + stateFullName + "&api_key="+ apiKey +"&limit=1");
+      loadGifs.send();
+   }; // getgif
 
 
 
@@ -362,28 +352,33 @@ var openAboutModal = function(){
 
 
 
+    
+
+
+
+
+
+
+
+
+
+
 
 
 // Waits for all content to be loaded
   document.addEventListener('DOMContentLoaded', function() {
    
     // For mobile, makes a dropdown
-    // Need actually make this mobile only
     makeMapValuesIntoDropdown();
     
     // Here you pass a callback function as a parameter to `updateCoordinate`.
     getOurLocation(function (loc) {
-      
         // sets global variables from returned vals
         myLat = loc.latitude;
         myLong = loc.longitude;
         getOurState();
-    
     });
 
-
-    
-    
     mapEventSetter();
     loadStateonSelect();
     openAboutModal();
