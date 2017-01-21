@@ -73,22 +73,23 @@
 
   <main id="main" class="container" aria-label="Content">
     
-    <h3 id="stateNameHeader" class="hidden-xs-down">State Name</h3>
-    
     <!-- Dropdown used for mobile users. Not shown for desktop -->
     <div class="selectBoxHolder hidden-md-up">
-      <label for="fiftyStatesDropdown">Pick your state:</label>
       <select id="fiftyStatesDropdown" name="fiftyStatesDropdown" class="form-control"></select>
       
       <label>Or locate with GPS</label>
       <div class="col-md-4 text-center"> 
         <button id="getGPScoordsButton" type="button" class="btn btn-success">Find my State's GIF!</button>
       </div>
-    </div>
+    </div><!-- .selectBoxHolder -->
     
   
   
-  <svg class="hidden-xs-down" xmlns="http://www.w3.org/2000/svg" height="593px" width="100%">
+    <div class="row hidden-xs-down">
+      <div class="col">
+         <h3 id="stateNameHeader" class="hidden-xs-down">State Name</h3>
+   
+        <svg viewbox="80 0 930 580" preserveAspectRatio xmlns="http://www.w3.org/2000/svg">
   
   <defs>
       <filter id="dropshadow" height="130%">
@@ -464,6 +465,11 @@
        
        </g>
   </svg>
+        
+      </div>
+    </div>
+  
+  
  </main>
 
 

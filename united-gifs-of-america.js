@@ -1,10 +1,9 @@
 // Punch List
 /*
 
-onloadstate = update dropdown for mobile
-makeMapValuesIntoDropdown = load mobile only
-onloadstate function = make select dropdown for mobile
-
+Resize screen - refire Modal
+loading screen on mobile Modal
+buttons on Modal
 Update URL with state
 
 
@@ -152,7 +151,6 @@ var getOurLocation = function(loc) {
 };
 
 
-
 // Find our state, based on GPS coords
 // Uses OpenStreetMap service
 // Relies on global myLat and myLat
@@ -192,9 +190,9 @@ var selectBoxSettoState = function(){
 // Function to create a dropdown from the values of the SVG map
 var makeMapValuesIntoDropdown = function(){
   
-
   // Place our States in this Array
-  var _stateArray = [];
+  
+  var _stateArray = ["<option selected disabled>Choose Your State</option>"];
   
   // Loops through each state, gathers ID and name, puts in an <option> tag
   for(var i=0;i < mapchild.length; i++){
@@ -340,7 +338,7 @@ var getGif = function(stateFullName){
         }
       };
   
-      loadGifs.open("GET", "http://api.giphy.com/v1/gifs/search?q=" + stateFullName + "&api_key="+ apiKey +"&limit=1");
+      loadGifs.open("GET", "https://api.giphy.com/v1/gifs/search?q=" + stateFullName + "&api_key="+ apiKey +"&limit=1");
       loadGifs.send();
    }; // getgif
 
@@ -377,18 +375,21 @@ var openAboutModal = function(){
 // Waits for all content to be loaded
   document.addEventListener('DOMContentLoaded', function() {
    
+   
     // For mobile, makes a dropdown
-    makeMapValuesIntoDropdown();
-    
-    // Here you pass a callback function as a parameter to `updateCoordinate`.
-    getOurLocation(function (loc) {
-        // sets global variables from returned vals
-        myLat = loc.latitude;
-        myLong = loc.longitude;
+      if(window.innerWidth < 1024){
+      makeMapValuesIntoDropdown();
+       
+      // Here you pass a callback function as a parameter to `updateCoordinate`.
+      getOurLocation(function (loc) {
+          // sets global variables from returned vals
+          myLat = loc.latitude;
+          myLong = loc.longitude;
+          getOurState();
+      });
+    };
 
-        getOurState();
-        
-    });
+
 
     mapEventSetter();
     loadStateonSelect();
