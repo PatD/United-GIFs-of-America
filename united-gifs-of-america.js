@@ -1,8 +1,9 @@
 // Punch List
 /*
 
-
+onloadstate = update dropdown for mobile
 makeMapValuesIntoDropdown = load mobile only
+onloadstate function = make select dropdown for mobile
 
 Update URL with state
 
@@ -19,6 +20,9 @@ var myLong = 0;
 /// Global my state variable
 var usersHomeState = "America";
 
+  // Green GPS button - shown on mobile only
+  var getGPScoordsButton = document.getElementById("getGPScoordsButton");
+  
 
   // About link
   var aboutLink = document.getElementById("aboutLink");
@@ -83,7 +87,6 @@ var makeStateUnfavorite = function(){
 };
 
 
-
 // Function: Saves selected state to local storage. Updates map.
 var savemyState = function(passedStateName, passedStateID){
   
@@ -118,33 +121,27 @@ var savemyState = function(passedStateName, passedStateID){
 // Callback returns lat and Long
 var getOurLocation = function(loc) {
   
-  // Green GPS button
-  var getGPScoordsButton = document.getElementById("getGPScoordsButton");
-  
   getGPScoordsButton.addEventListener("click",function(){ 
   
+    if(document.documentElement.clientWidth	 < 640 && navigator.geolocation){
+    
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+         // console.log(position);
+          var returnValue = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
+          //  return loc with our coords
+          loc(returnValue);
+        
+        });
+    }
+    else{
+      console.log("Error in Geolocation, or yer screen's too big");
+    } // if statement
   
-  if(document.documentElement.clientWidth	 < 640 && navigator.geolocation){
-  
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-            console.log(position);
-        var returnValue = {
-     
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        };
-
-        //  return loc with our coords
-        loc(returnValue);
-      
-      });
-  }
-  else{
-    console.log("Error in Geolocation, or yer screen's too big");
-  }
-  
- });  // event listener
+  });  // event listener
 };
 
 
@@ -154,7 +151,7 @@ var getOurLocation = function(loc) {
 // Relies on global myLat and myLat
 var getOurState = function(){
   
-  var url = "http://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
+  var url = "https://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
 
   req = new XMLHttpRequest();
   req.open('GET', url);
@@ -163,9 +160,8 @@ var getOurState = function(){
   req.onreadystatechange = function(){
     if (this.readyState == 4 && this.status == 200) {
       var _returnedAddress =JSON.parse(this.responseText);
-       console.log(_returnedAddress.address.state);
-      
-      usersHomeState = _returnedAddress.address.state;
+       // console.log(_returnedAddress.address.state);
+        usersHomeState = _returnedAddress.address.state;
         getGif(usersHomeState);
         
     };
@@ -216,9 +212,6 @@ var loadStateonSelect = function(){
     getGif(chosenoptionState);
   };
 };
-
-
-
 
 
 
@@ -293,12 +286,10 @@ var mapEventSetter = function(){
     
 
   
-    
-    
-  // Service that loads from Giffy.  Expects name of state as paramter
-  // Also handles modal
+// Service that loads from Giffy.  Expects name of state as paramter
+// Also handles modal
   
-  var getGif = function(stateFullName){
+var getGif = function(stateFullName){
     
     const apiKey = "dc6zaTOxFJmzC";
     var stateFullName = stateFullName;
@@ -376,7 +367,20 @@ var openAboutModal = function(){
         // sets global variables from returned vals
         myLat = loc.latitude;
         myLong = loc.longitude;
+        
+        
+        // Changes dropdown to match geolocated state
+        console.log(fiftyStatesDropdown);
+        console.log(usersHomeState)
+        
+        for (var i = 0; i < fiftyStatesDropdown.options.length; i++) {
+            if (fiftyStatesDropdown.options[i].text === usersHomeState) {
+                fiftyStatesDropdown.selectedIndex = i;
+                break;
+            }
+        }
         getOurState();
+        
     });
 
     mapEventSetter();

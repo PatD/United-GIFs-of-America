@@ -1,4 +1,4 @@
-body{background:url('const.jpg') top left;}
+body{background:url('const-small.jpg') top left;}
 
 
 header{
@@ -8,7 +8,7 @@ header{
 }
 
 h1  {
-  font-family: 'Fredericka the Great',serif;; 
+  font-family: 'Ewert',serif;
   text-shadow:0px 0px 0px;}
   
 h1 abbr{
@@ -43,7 +43,7 @@ h2{
 
 
 /* Blue box that holds state name on hover */
-#stateNameHeader {font-family: 'Fredericka the Great', cursive; font-size:24pt;text-align:center;position: absolute;
+#stateNameHeader {font-family: 'Ewert', cursive; font-size:24pt;text-align:center;position: absolute;
   right: 270px;
   top: 34px;
   background:blue;color:#fff;
@@ -86,17 +86,9 @@ path{stroke:blue}
 
 
 
-/* Fixed footer */
-footer{
-  position: fixed;
-  bottom:0;
-  left: 0;
-  right:0;
-}
 
-footer img{
-  float:right;
-}
+
+
 
 
 
@@ -115,7 +107,7 @@ small a, small .text-primary{text-decoration:underline;cursor:pointer;}
 
 
 
-h5.modal-title{font-family: 'Fredericka the Great', cursive;font-size:1.75em;line-height:1em;}
+h5.modal-title{font-family: 'Ewert', cursive;font-size:1.75em;line-height:1em;}
 h5.modal-title span {color:red;}
 
 
@@ -141,6 +133,20 @@ h5.modal-title span {color:red;}
   
   main{top:-20px;}
   
+  
+  /* Fixed footer */
+footer{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  right:0;
+}
+ footer img{
+  float:right;
+} 
+  
+  
+  
 }
 
 
@@ -152,12 +158,3 @@ h5.modal-title span {color:red;}
 
 
 
-/*
-
-
-header img{float:left;width:100px;}
-
-main{margin-top:-20px;}
-
-
-*/
