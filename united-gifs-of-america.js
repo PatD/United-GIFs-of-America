@@ -68,22 +68,31 @@ var myFavoriteStateID = localStorage.favoriteStateID;
 
 // Function: Checks if state is in localStorage, and selects the state on map
 var onLoadState = function(){
-  var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
-  onLoadFavoriteStateNode.setAttribute("favorite", "true");
-  onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
+  
+  // If local storage isn't empty...
+  if(myFavoriteStateID !== undefined){
+    var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
+    onLoadFavoriteStateNode.setAttribute("favorite", "true");
+    onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
+  };
+  
 };
 
 
 // Function: removes any previously selected favorite state.
 var makeStateUnfavorite = function(){
-  var oldFavoriteStateID = localStorage.getItem('favoriteStateID');
-  var oldFavoriteStateNode = document.getElementById(oldFavoriteStateID);
-  
-  // Remove favorite attribute
-  oldFavoriteStateNode.removeAttribute("favorite");
-  
-  // Returns color to normal
-  oldFavoriteStateNode.setAttribute("fill", mapColor);
+  // If local storage isn't empty...
+  if(myFavoriteStateID !== undefined){
+    
+    var oldFavoriteStateID = localStorage.getItem('favoriteStateID');
+    var oldFavoriteStateNode = document.getElementById(oldFavoriteStateID);
+    
+    // Remove favorite attribute
+    oldFavoriteStateNode.removeAttribute("favorite");
+    
+    // Returns color to normal
+    oldFavoriteStateNode.setAttribute("fill", mapColor);
+  };
 };
 
 
@@ -113,8 +122,6 @@ var savemyState = function(passedStateName, passedStateID){
     });
   
 };
-
-
 
 
 // Helper function to find our location.
@@ -163,12 +170,23 @@ var getOurState = function(){
        // console.log(_returnedAddress.address.state);
         usersHomeState = _returnedAddress.address.state;
         getGif(usersHomeState);
+        selectBoxSettoState(usersHomeState)
         
     };
   };
 
 };
 
+  // Function: Changes dropdown to match geolocated state
+var selectBoxSettoState = function(){
+      
+  for (var i = 0; i < fiftyStatesDropdown.options.length; i++) {
+      if (fiftyStatesDropdown.options[i].text === usersHomeState) {
+          fiftyStatesDropdown.selectedIndex = i;
+          break;
+      };
+  };
+};
 
 
 // Function to create a dropdown from the values of the SVG map
@@ -367,18 +385,7 @@ var openAboutModal = function(){
         // sets global variables from returned vals
         myLat = loc.latitude;
         myLong = loc.longitude;
-        
-        
-        // Changes dropdown to match geolocated state
-        console.log(fiftyStatesDropdown);
-        console.log(usersHomeState)
-        
-        for (var i = 0; i < fiftyStatesDropdown.options.length; i++) {
-            if (fiftyStatesDropdown.options[i].text === usersHomeState) {
-                fiftyStatesDropdown.selectedIndex = i;
-                break;
-            }
-        }
+
         getOurState();
         
     });
