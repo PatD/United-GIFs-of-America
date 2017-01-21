@@ -79,7 +79,7 @@ main label{
 
 main #getGPScoordsButton {font-family: 'Julius Sans One', sans-serif}
 
-main svg {margin-left:-20px;}
+svg {margin-top:-30px;}
 
 main g {cursor:pointer;}
 
@@ -87,9 +87,9 @@ path{stroke:blue}
 
 
 
-footer {margin-top:50px;text-align:center;}
+footer {text-align:center;}
 
-footer img{margin-top:20px;}
+
 footer small a, 
 footer small .text-primary{text-decoration:underline;cursor:pointer;}
 
@@ -137,23 +137,18 @@ h5.modal-title span {color:red;}
   
   /* Fixed footer */
 footer{
-  text-align: right;
+  text-align: left;
   margin-top:0;
-  position: fixed;
+  position: fixed !important;
   bottom:0;
   left: 0;
   right:0;
 }
- footer img{
-  float:right;
-} 
-  
-footer small{position:fixed;bottom:10px;float:left;}
 
 
 
   
-}
+} /* Media query for big screens */
 
 
 
