@@ -1,9 +1,16 @@
 // Punch List
 /*
 
+Error:  Dropdown doesn't let user save
+
+Can we load lower size on mobile?  Make mobile an object/var?
+
+
+gzip!
+Modal - Load thumbnail first w/loading on top
+
 Resize screen - refire Modal
 loading screen on mobile Modal
-buttons on Modal
 Update URL with state
 
 
@@ -22,7 +29,6 @@ var usersHomeState = "America";
   // Green GPS button - shown on mobile only
   var getGPScoordsButton = document.getElementById("getGPScoordsButton");
   
-
   // About link
   var aboutLink = document.getElementById("aboutLink");
 
@@ -40,6 +46,8 @@ var usersHomeState = "America";
   
   // State name text node
   var stateNameHeader = document.getElementById("stateNameHeader");
+  var stateNameInline = document.getElementById("stateInlineforModal");
+  
   
   // Image + text where per-state-gif lands
   var stateGifHolder = document.getElementById("stateGifHolder");
@@ -74,9 +82,7 @@ var onLoadState = function(){
     onLoadFavoriteStateNode.setAttribute("favorite", "true");
     onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
   };
-  
 };
-
 
 // Function: removes any previously selected favorite state.
 var makeStateUnfavorite = function(){
@@ -94,34 +100,63 @@ var makeStateUnfavorite = function(){
   };
 };
 
+// Function: Marks the 'Save As Favorite' button saved
+var markSavedonButton = function(){
+  saveButton.className = 'btn btn-primary';
+  saveButton.setAttribute('disabled',true);
+  saveButton.textContent = '✅ Saved!';
+};
+
+// Function: Marks the 'Save As Favorite' button saved
+var resetSavedonButton = function(){
+  saveButton.className = 'btn btn-success';
+  saveButton.removeAttribute('disabled');
+  saveButton.textContent = 'Save as my Official State GIF';
+};
 
 // Function: Saves selected state to local storage. Updates map.
 var savemyState = function(passedStateName, passedStateID){
   
-    // Adds event listener for clicking save
-    saveButton.addEventListener("click", function handler(){
+    // Checks if we're not already the favorite
+    if(passedStateID !== localStorage.getItem('favoriteStateID')){
       
-      // removes any existing favorite
-      makeStateUnfavorite();
+      // Show the button, in case it was invisible
+      if (saveButton.className == 'invisible'){
+        saveButton.className = 'btn btn-success';
+      }
+      
+      // Adds event listener for clicking save
+      saveButton.addEventListener("click", function handler(){
+        
+        // Tell user it's done right away!
+        markSavedonButton();
+        
+        // removes any existing favorite
+        makeStateUnfavorite();
+      
+        // If we leave this line in, we can only use the button once? 
+        // this.removeEventListener('click', handler);
+        
+        // Put our passed value into local storage!
+        localStorage.setItem('favoriteState', passedStateName);
+        localStorage.setItem('favoriteStateID', passedStateID);
+        
+        // The state which we just selected to be favorite, color it in!
+        var mySelectedStateID = document.getElementById(passedStateID);
+        mySelectedStateID.setAttribute("fill", mapColorFavorite);
     
-      // If we leave this line in, we can only use the button once? 
-      this.removeEventListener('click', handler);
-      
-      // Put our passed value into local storage!
-      localStorage.setItem('favoriteState', passedStateName);
-      localStorage.setItem('favoriteStateID', passedStateID);
-      
-      // The state which we just selected to be favorite, color it in!
-      var mySelectedStateID = document.getElementById(passedStateID);
-      mySelectedStateID.setAttribute("fill", mapColorFavorite);
-  
-      // This state we just selected to be favorite, add an attribute mark it so
-      mySelectedStateID.setAttribute("favorite", "true");
-  
-    });
+        // This state we just selected to be favorite, add an attribute mark it so
+        mySelectedStateID.setAttribute("favorite", "true");
+    
+      });
+    }
+    
+    // If we re-open our favorite state, the save button is not shown
+    else{
+      saveButton.className = 'invisible';
+    }
   
 };
-
 
 // Helper function to find our location.
 // Callback returns lat and Long
@@ -129,7 +164,7 @@ var getOurLocation = function(loc) {
   
   getGPScoordsButton.addEventListener("click",function(){ 
   
-    if(document.documentElement.clientWidth	 < 640 && navigator.geolocation){
+    if(document.documentElement.clientWidth < 640 && navigator.geolocation){
     
       navigator.geolocation.getCurrentPosition(
         function (position) {
@@ -151,31 +186,28 @@ var getOurLocation = function(loc) {
 };
 
 
-// Find our state, based on GPS coords
-// Uses OpenStreetMap service
+// Function: Find our state, based on GPS coords
 // Relies on global myLat and myLat
 var getOurState = function(){
   
-  var url = "https://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
+  var mapServiceCall = "https://nominatim.openstreetmap.org/reverse?pdoran@gmail.com&zoom=8&format=json&lat=" + myLat + "&lon=" + myLong;
 
   req = new XMLHttpRequest();
-  req.open('GET', url);
+  req.open('GET', mapServiceCall);
   req.send();
   
   req.onreadystatechange = function(){
     if (this.readyState == 4 && this.status == 200) {
       var _returnedAddress =JSON.parse(this.responseText);
-       // console.log(_returnedAddress.address.state);
         usersHomeState = _returnedAddress.address.state;
         getGif(usersHomeState);
-        selectBoxSettoState(usersHomeState)
-        
+        selectBoxSettoState(usersHomeState);
     };
   };
 
 };
 
-  // Function: Changes dropdown to match geolocated state
+// Function: Changes dropdown to match geolocated state
 var selectBoxSettoState = function(){
       
   for (var i = 0; i < fiftyStatesDropdown.options.length; i++) {
@@ -185,7 +217,6 @@ var selectBoxSettoState = function(){
       };
   };
 };
-
 
 // Function to create a dropdown from the values of the SVG map
 var makeMapValuesIntoDropdown = function(){
@@ -199,7 +230,10 @@ var makeMapValuesIntoDropdown = function(){
 
     var _stateID = mapchild[i].getAttribute("data-id");
     var _stateName = mapchild[i].getAttribute("data-name");
-    var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
+    // var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
+   var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
+   
+   
    
     //  Adds <options> to _stateArray 
     _stateArray.push(_stateOptionNode);
@@ -231,7 +265,6 @@ var loadStateonSelect = function(){
 
 
 
- 
 // Function: Handles Map hover, click, loading modal
 var mapEventSetter = function(){
     
@@ -253,7 +286,7 @@ var mapEventSetter = function(){
           stateNameHeader.textContent = stateFullName;
           
           // Clears already loaded GIF if there is one
-          // stateGifHolder.setAttribute("src", loadingGif);
+           stateGifHolder.setAttribute("src", loadingGif);
       
       }); // End mouseover function
       
@@ -275,6 +308,8 @@ var mapEventSetter = function(){
       
       // Event listener for click
       mapchild[i].addEventListener("click", function(){
+        
+        resetSavedonButton();
          
         // Clears already loaded GIF if there is one
         // So it doesn't show up accidentally for fast-clickers
@@ -290,6 +325,7 @@ var mapEventSetter = function(){
         this.setAttribute("fill",mapColorHover);
           
         stateNameHeader.textContent = stateFullName;
+        stateNameInline.textContent = stateFullName;
         
         // Adds event listener for save the state
         savemyState(stateFullName,stateID);
@@ -328,7 +364,6 @@ var getGif = function(stateFullName){
          
         // Fires modal dialog box
         $('#stateModal').modal('show')
-        
       
         } // if
         
@@ -352,18 +387,6 @@ var openAboutModal = function(){
     $('#aboutModal').modal('show')
   });  
 };
-
-
-
-
-
-
-
-    
-
-
-
-
 
 
 
