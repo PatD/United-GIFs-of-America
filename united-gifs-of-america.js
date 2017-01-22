@@ -19,6 +19,16 @@ Update URL with state
 
 // DOM ELEMENTS
 
+// Global variable: End user's Favorite State
+  // localStorage sets this if the user set one in the last session
+var myFavoriteState = localStorage.favoriteState;
+var myFavoriteStateID = localStorage.favoriteStateID;
+
+
+// Global currently active Name and ID
+// Shared between select and map clickers
+var stateFullName;
+var stateID;
 
 // Global location
 var myLat = 0;
@@ -28,6 +38,9 @@ var usersHomeState = "America";
 
   // Green GPS button - shown on mobile only
   var getGPScoordsButton = document.getElementById("getGPScoordsButton");
+  
+  // Box that holds GPS button
+  var geoLocationBlock = document.getElementById("geoLocationBlock");
   
   // About link
   var aboutLink = document.getElementById("aboutLink");
@@ -65,20 +78,18 @@ var usersHomeState = "America";
   const mapColorFavorite = "url(#favoriteStateBackgroundImage)";
 
 
-// Global variable: End user's Favorite State
-  // localStorage sets this if the user set one in the last session
-var myFavoriteState = localStorage.favoriteState;
-var myFavoriteStateID = localStorage.favoriteStateID;
-
 
 
 
 // Function: Checks if state is in localStorage, and selects the state on map
 var onLoadState = function(){
   
-  // If local storage isn't empty...
+  // If our local storage state exists
   if(myFavoriteStateID !== undefined){
+    //console.log(myFavoriteStateID);
     var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
+    //console.log(onLoadFavoriteStateNode);
+    
     onLoadFavoriteStateNode.setAttribute("favorite", "true");
     onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
   };
@@ -86,6 +97,7 @@ var onLoadState = function(){
 
 // Function: removes any previously selected favorite state.
 var makeStateUnfavorite = function(){
+  /*
   // If local storage isn't empty...
   if(myFavoriteStateID !== undefined){
     
@@ -98,6 +110,7 @@ var makeStateUnfavorite = function(){
     // Returns color to normal
     oldFavoriteStateNode.setAttribute("fill", mapColor);
   };
+  */
 };
 
 // Function: Marks the 'Save As Favorite' button saved
@@ -220,6 +233,12 @@ var selectBoxSettoState = function(){
 // Function to create a dropdown from the values of the SVG map
 var makeMapValuesIntoDropdown = function(){
   
+  // Shows GPS button if device has capability
+  if(navigator.geolocation){
+    geoLocationBlock.setAttribute("id","gpsblock");
+  };
+  
+  
   // Place our States in this Array
   
   var _stateArray = ["<option selected disabled>Choose Your State</option>"];
@@ -248,10 +267,7 @@ var makeMapValuesIntoDropdown = function(){
 
 
 
-// Global currently active Name and ID
-// Shared between select and map clickers
-var stateFullName;
-var stateID;
+
 
 
 
@@ -339,16 +355,17 @@ var mapEventSetter = function(){
       }); // End mosueout function
       
       
-      
       // Event listener for click
       mapchild[i].addEventListener("click", function(){
-        
-        loadLauncher();
-         
+      
         // What the state and ID are here:
         stateFullName = this.getAttribute("data-name");
         stateID = this.getAttribute("data-id");
          
+         
+        console.log("Click event:" + stateFullName + stateID) 
+        loadLauncher();
+
         // pass name to getGif function
         getGif(stateFullName);
         
@@ -422,24 +439,29 @@ var openAboutModal = function(){
 // Waits for all content to be loaded
   document.addEventListener('DOMContentLoaded', function() {
    
-   
+       onLoadState();
+       
     // For mobile, makes a dropdown
       if(window.innerWidth < 1024){
-      makeMapValuesIntoDropdown();
-       
+      
+        makeMapValuesIntoDropdown();
+      
+          loadStateonSelect();
       // Here you pass a callback function as a parameter to `updateCoordinate`.
+      
       getOurLocation(function (loc) {
           // sets global variables from returned vals
           myLat = loc.latitude;
           myLong = loc.longitude;
+          
           getOurState();
       });
+      
     };
 
 
 
     mapEventSetter();
-    loadStateonSelect();
     openAboutModal();
-    onLoadState();
+
   }); // DOM loaded   

@@ -55,6 +55,8 @@ main label{
 }
 
 
+
+main #geoLocationBlock {visibility:hidden;}
 main #getGPScoordsButton {font-family: 'Julius Sans One', sans-serif}
 
 svg {}
