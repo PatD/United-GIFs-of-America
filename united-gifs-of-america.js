@@ -185,7 +185,6 @@ var getOurLocation = function(loc) {
   });  // event listener
 };
 
-
 // Function: Find our state, based on GPS coords
 // Relies on global myLat and myLat
 var getOurState = function(){
@@ -230,10 +229,7 @@ var makeMapValuesIntoDropdown = function(){
 
     var _stateID = mapchild[i].getAttribute("data-id");
     var _stateName = mapchild[i].getAttribute("data-name");
-    // var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
-   var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
-   
-   
+    var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
    
     //  Adds <options> to _stateArray 
     _stateArray.push(_stateOptionNode);
@@ -248,21 +244,59 @@ var makeMapValuesIntoDropdown = function(){
 };
 
 
+
+
+
+
+// Global currently active Name and ID
+// Shared between select and map clickers
+var stateFullName;
+var stateID;
+
+
+
+
+
+
 // Function: Fires GIF modal for the selected state when selected on dropdown
 var loadStateonSelect = function(){
   
   fiftyStatesDropdown.onchange = function(){
-  
-    var chosenoption=this.options[this.selectedIndex];
-    var chosenoptionState=this.options[this.selectedIndex].text;
     
+    // Preps modal
+    loadLauncher();
+  
+    // Sets global variables
+    stateID = this.options[this.selectedIndex].value;
+    stateFullName = this.options[this.selectedIndex].text;
+    
+    var chosenoption=this.options[this.selectedIndex];
     chosenoption.setAttribute("selected","selected");
     
     // fires function to load gif via modal
-    getGif(chosenoptionState);
+    getGif(stateFullName);
   };
 };
 
+
+
+// Function: Fires when selecte-optioned or clicked to show a GIF
+var loadLauncher = function(){
+  
+  // Fixes our saved button
+  resetSavedonButton();
+  
+  stateNameHeader.textContent = stateFullName;
+  stateNameInline.textContent = stateFullName;
+  
+  // Clears already loaded GIF if there is one
+  // So it doesn't show up accidentally for fast-clickers
+  stateGifHolder.setAttribute("src", loadingGif);
+  
+  // Adds event listener for save the state
+  savemyState(stateFullName,stateID);
+  
+};
 
 
 // Function: Handles Map hover, click, loading modal
@@ -309,26 +343,16 @@ var mapEventSetter = function(){
       // Event listener for click
       mapchild[i].addEventListener("click", function(){
         
-        resetSavedonButton();
-         
-        // Clears already loaded GIF if there is one
-        // So it doesn't show up accidentally for fast-clickers
-        stateGifHolder.setAttribute("src", loadingGif);
+        loadLauncher();
          
         // What the state and ID are here:
-        var stateFullName = this.getAttribute("data-name");
-        var stateID = this.getAttribute("data-id");
+        stateFullName = this.getAttribute("data-name");
+        stateID = this.getAttribute("data-id");
          
         // pass name to getGif function
         getGif(stateFullName);
         
         this.setAttribute("fill",mapColorHover);
-          
-        stateNameHeader.textContent = stateFullName;
-        stateNameInline.textContent = stateFullName;
-        
-        // Adds event listener for save the state
-        savemyState(stateFullName,stateID);
         
        });
      
@@ -337,7 +361,6 @@ var mapEventSetter = function(){
 };  
     
 
-  
 // Service that loads from Giffy.  Expects name of state as paramter
 // Also handles modal
   
@@ -358,6 +381,8 @@ var getGif = function(stateFullName){
       
         // Title in modal:
         stateTitleforModal.innerHTML=stateFullName;
+        stateNameInline.innerHTML=stateFullName;
+        
          
         // Sets SRC of image in Modal to value from GIFFY feed
         stateGifHolder.setAttribute("src",mainGif);
@@ -376,7 +401,6 @@ var getGif = function(stateFullName){
       loadGifs.open("GET", "https://api.giphy.com/v1/gifs/search?q=" + stateFullName + "&api_key="+ apiKey +"&limit=1");
       loadGifs.send();
    }; // getgif
-
 
 
 // Open about modal
