@@ -1,8 +1,6 @@
 // Punch List
 /*
 
-Error:  Dropdown doesn't let user save
-
 Can we load lower size on mobile?  Make mobile an object/var?
 
 
@@ -17,26 +15,27 @@ Update URL with state
 */
 
 
-// DOM ELEMENTS
+
 
 // Global currently active Name and ID
 // Shared between select and map clickers
 var stateFullName;
 var stateID;
 
-
 // Global variable: End user's Favorite State
   // localStorage sets this if the user set one in the last session
 var myFavoriteState = localStorage.favoriteState;
 var myFavoriteStateID = localStorage.favoriteStateID;
 
-
-
 // Global location
 var myLat = 0;
 var myLong = 0;
+
 /// Global my state variable
 var usersHomeState = "America";
+
+
+
 
   // Green GPS button - shown on mobile only
   var getGPScoordsButton = document.getElementById("getGPScoordsButton");
@@ -97,35 +96,16 @@ var onLoadState = function(){
   }
   // If it's empty
   else{
-      console.log("Local is null or undefined");
+      console.log("Local Storage is null or undefined");
    
   };
-
-
-  /*
-  // If our local storage state exists
-  if(myFavoriteStateID !== undefined){
-    // console.log(myFavoriteStateID);
-    var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
-    // console.log(onLoadFavoriteStateNode);
-    
-    onLoadFavoriteStateNode.setAttribute("favorite", "true");
-    onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
-  }
-  else{
-    console.log("Nothing in Local Storage");
-  }
-  */
 };
 
 // Function: removes any previously selected favorite state.
 var makeStateUnfavorite = function(){
   
   // If local storage isn't empty...
-  // if(myFavoriteStateID !== undefined){
-  
    if (localStorage.getItem("favoriteStateID") !== null && localStorage.getItem("favoriteStateID") !== undefined) {
- 
     
     var oldFavoriteStateID = localStorage.getItem('favoriteStateID');
     var oldFavoriteStateNode = document.getElementById(oldFavoriteStateID);
@@ -159,7 +139,7 @@ var savemyState = function(passedStateName, passedStateID){
     // Checks if we're not already the favorite
     if(passedStateID !== localStorage.getItem('favoriteStateID')){
       
-      // Show the button, in case it was invisible
+      // Show the Save button, in case it was invisible
       if (saveButton.className == 'invisible'){
         saveButton.className = 'btn btn-success';
       }
@@ -182,6 +162,9 @@ var savemyState = function(passedStateName, passedStateID){
         
         // The state which we just selected to be favorite, color it in!
         var mySelectedStateID = document.getElementById(passedStateID);
+        
+        console.log(passedStateID);
+        
         mySelectedStateID.setAttribute("fill", mapColorFavorite);
     
         // This state we just selected to be favorite, add an attribute mark it so
@@ -299,20 +282,24 @@ var makeMapValuesIntoDropdown = function(){
 
 
 // Function: Fires when select-optioned or clicked to show a GIF
-var loadLauncher = function(){
+var loadLauncher = function(statePassed, stateIDPassed){
   
-  // Fixes our saved button
-  resetSavedonButton();
-  
-  stateNameHeader.textContent = stateFullName;
-  stateNameInline.textContent = stateFullName;
+  // console.log("state passed is " + statePassed + "and ID is " + stateIDPassed);
   
   // Clears already loaded GIF if there is one
   // So it doesn't show up accidentally for fast-clickers
   stateGifHolder.setAttribute("src", loadingGif);
   
+  // Fixes our saved button
+  resetSavedonButton();
+  
+  // Modal content text updates
+  stateNameHeader.textContent = statePassed;
+  stateNameInline.textContent = statePassed;
+  
+ 
   // Adds event listener for save the state
-  savemyState(stateFullName,stateID);
+  savemyState(statePassed,stateIDPassed);
   
 };
 
@@ -324,10 +311,7 @@ var loadLauncher = function(){
 var loadStateonSelect = function(){
   
   fiftyStatesDropdown.onchange = function(){
-    
-    // Preps modal
-    loadLauncher();
-  
+
     // Sets global variables
     stateID = this.options[this.selectedIndex].value;
     stateFullName = this.options[this.selectedIndex].text;
@@ -337,6 +321,9 @@ var loadStateonSelect = function(){
     
     // fires function to load gif via modal
     getGif(stateFullName);
+
+    // Preps modal
+    loadLauncher(stateFullName,stateID);
   };
 };
 
@@ -392,8 +379,9 @@ var mapEventSetter = function(){
         stateID = this.getAttribute("data-id");
          
          
-        console.log("Click event:" + stateFullName + stateID) 
-        loadLauncher();
+        // console.log("Click event:" + stateFullName + stateID) 
+        
+        loadLauncher(stateFullName,stateID);
 
         // pass name to getGif function
         getGif(stateFullName);
