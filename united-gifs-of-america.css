@@ -79,7 +79,7 @@ footer small .text-primary{text-decoration:underline;cursor:pointer;}
 
 
 
-#stateGifHolder{max-width:100%;}
+#stateGifHolder, #aboutModalImage{max-width:100%;margin-bottom:1em;}
 
 
 

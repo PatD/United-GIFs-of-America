@@ -47,6 +47,7 @@ var usersHomeState = "America";
   
   // About link
   var aboutLink = document.getElementById("aboutLink");
+  var aboutModalImage = document.getElementById("aboutModalImage");
 
   // Dropdown where we want our states added
   var fiftyStatesDropdown = document.getElementById("fiftyStatesDropdown");
@@ -440,6 +441,12 @@ var getGif = function(stateFullName){
     
 var openAboutModal = function(){
   aboutLink.addEventListener("click", function(){
+    
+    // Lazy loads About GIF
+    var _imageSrc = aboutModalImage.getAttribute("data-src");
+    aboutModalImage.setAttribute("src",_imageSrc);
+    
+    // Boostrap Modal load
     $('#aboutModal').modal('show')
   });  
 };
