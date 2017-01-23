@@ -36,6 +36,8 @@ var usersHomeState = "America";
 
 
 
+  // GPS loading icon
+  var geoLoadingIcon = document.getElementById("geoLoadingIcon");
 
   // Green GPS button - shown on mobile only
   var getGPScoordsButton = document.getElementById("getGPScoordsButton");
@@ -186,10 +188,14 @@ var getOurLocation = function(loc) {
   
   getGPScoordsButton.addEventListener("click",function(){ 
   
-    if(document.documentElement.clientWidth < 640 && navigator.geolocation){
+    console.log("Geo clicked")
+  
+    if(document.documentElement.clientWidth < 1024 && navigator.geolocation){
+    
+      // Shows loading icon
+      geoLoadingIcon.style.cssText="display:block;"
     
       navigator.geolocation.getCurrentPosition(
-        
         
         function (position) {
          // console.log(position);
@@ -228,6 +234,9 @@ var getOurState = function(){
         getGif(usersHomeState);
         
         selectBoxSettoState(usersHomeState);
+        
+        // Hide loading icon
+        geoLoadingIcon.style.cssText="display:none;"
     };
   };
 
@@ -276,11 +285,6 @@ var makeMapValuesIntoDropdown = function(){
 };
 
 
-
-
-
-
-
 // Function: Fires when select-optioned or clicked to show a GIF
 var loadLauncher = function(statePassed, stateIDPassed){
   
@@ -304,9 +308,6 @@ var loadLauncher = function(statePassed, stateIDPassed){
 };
 
 
-
-
-
 // Function: Fires GIF modal for the selected state when selected on dropdown
 var loadStateonSelect = function(){
   
@@ -326,9 +327,6 @@ var loadStateonSelect = function(){
     loadLauncher(stateFullName,stateID);
   };
 };
-
-
-
 
 
 
@@ -455,8 +453,8 @@ var openAboutModal = function(){
 
 // Waits for all content to be loaded
   document.addEventListener('DOMContentLoaded', function() {
-   
-       onLoadState();
+    
+    onLoadState();
        
     // For mobile, makes a dropdown
       if(window.innerWidth < 1024){
@@ -471,13 +469,11 @@ var openAboutModal = function(){
           // sets global variables from returned vals
           myLat = loc.latitude;
           myLong = loc.longitude;
-          
           getOurState();
+
       });
       
     };
-
-
 
     mapEventSetter();
     openAboutModal();
