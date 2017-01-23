@@ -19,16 +19,18 @@ Update URL with state
 
 // DOM ELEMENTS
 
+// Global currently active Name and ID
+// Shared between select and map clickers
+var stateFullName;
+var stateID;
+
+
 // Global variable: End user's Favorite State
   // localStorage sets this if the user set one in the last session
 var myFavoriteState = localStorage.favoriteState;
 var myFavoriteStateID = localStorage.favoriteStateID;
 
 
-// Global currently active Name and ID
-// Shared between select and map clickers
-var stateFullName;
-var stateID;
 
 // Global location
 var myLat = 0;
@@ -71,7 +73,6 @@ var usersHomeState = "America";
   // Loading GIF for modal
   const loadingGif = "loading-america.gif";
   
-  
   // Default fills color of SVG Map
   const mapColor = "#fff";
   const mapColorHover = "#ff0000";
@@ -84,22 +85,47 @@ var usersHomeState = "America";
 // Function: Checks if state is in localStorage, and selects the state on map
 var onLoadState = function(){
   
-  // If our local storage state exists
-  if(myFavoriteStateID !== undefined){
-    //console.log(myFavoriteStateID);
+  // If Local Storage has stuff
+  if (localStorage.getItem("favoriteStateID") !== null && localStorage.getItem("favoriteStateID") !== undefined) {
+    
     var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
-    //console.log(onLoadFavoriteStateNode);
     
     onLoadFavoriteStateNode.setAttribute("favorite", "true");
     onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
+  
+    console.log("Local storage has stuff it in!");
+  }
+  // If it's empty
+  else{
+      console.log("Local is null or undefined");
+   
   };
+
+
+  /*
+  // If our local storage state exists
+  if(myFavoriteStateID !== undefined){
+    // console.log(myFavoriteStateID);
+    var onLoadFavoriteStateNode = document.getElementById(myFavoriteStateID);
+    // console.log(onLoadFavoriteStateNode);
+    
+    onLoadFavoriteStateNode.setAttribute("favorite", "true");
+    onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
+  }
+  else{
+    console.log("Nothing in Local Storage");
+  }
+  */
 };
 
 // Function: removes any previously selected favorite state.
 var makeStateUnfavorite = function(){
-  /*
+  
   // If local storage isn't empty...
-  if(myFavoriteStateID !== undefined){
+  // if(myFavoriteStateID !== undefined){
+  
+   if (localStorage.getItem("favoriteStateID") !== null && localStorage.getItem("favoriteStateID") !== undefined) {
+ 
     
     var oldFavoriteStateID = localStorage.getItem('favoriteStateID');
     var oldFavoriteStateNode = document.getElementById(oldFavoriteStateID);
@@ -110,7 +136,7 @@ var makeStateUnfavorite = function(){
     // Returns color to normal
     oldFavoriteStateNode.setAttribute("fill", mapColor);
   };
-  */
+  
 };
 
 // Function: Marks the 'Save As Favorite' button saved
@@ -180,6 +206,8 @@ var getOurLocation = function(loc) {
     if(document.documentElement.clientWidth < 640 && navigator.geolocation){
     
       navigator.geolocation.getCurrentPosition(
+        
+        
         function (position) {
          // console.log(position);
           var returnValue = {
@@ -194,6 +222,7 @@ var getOurLocation = function(loc) {
     else{
       console.log("Error in Geolocation, or yer screen's too big");
     } // if statement
+  
   
   });  // event listener
 };
@@ -212,7 +241,9 @@ var getOurState = function(){
     if (this.readyState == 4 && this.status == 200) {
       var _returnedAddress =JSON.parse(this.responseText);
         usersHomeState = _returnedAddress.address.state;
+        
         getGif(usersHomeState);
+        
         selectBoxSettoState(usersHomeState);
     };
   };
@@ -235,12 +266,11 @@ var makeMapValuesIntoDropdown = function(){
   
   // Shows GPS button if device has capability
   if(navigator.geolocation){
-    geoLocationBlock.setAttribute("id","gpsblock");
+    geoLocationBlock.setAttribute("id","gpsblockVisible");
   };
   
   
   // Place our States in this Array
-  
   var _stateArray = ["<option selected disabled>Choose Your State</option>"];
   
   // Loops through each state, gathers ID and name, puts in an <option> tag
@@ -268,7 +298,23 @@ var makeMapValuesIntoDropdown = function(){
 
 
 
-
+// Function: Fires when select-optioned or clicked to show a GIF
+var loadLauncher = function(){
+  
+  // Fixes our saved button
+  resetSavedonButton();
+  
+  stateNameHeader.textContent = stateFullName;
+  stateNameInline.textContent = stateFullName;
+  
+  // Clears already loaded GIF if there is one
+  // So it doesn't show up accidentally for fast-clickers
+  stateGifHolder.setAttribute("src", loadingGif);
+  
+  // Adds event listener for save the state
+  savemyState(stateFullName,stateID);
+  
+};
 
 
 
@@ -296,23 +342,7 @@ var loadStateonSelect = function(){
 
 
 
-// Function: Fires when selecte-optioned or clicked to show a GIF
-var loadLauncher = function(){
-  
-  // Fixes our saved button
-  resetSavedonButton();
-  
-  stateNameHeader.textContent = stateFullName;
-  stateNameInline.textContent = stateFullName;
-  
-  // Clears already loaded GIF if there is one
-  // So it doesn't show up accidentally for fast-clickers
-  stateGifHolder.setAttribute("src", loadingGif);
-  
-  // Adds event listener for save the state
-  savemyState(stateFullName,stateID);
-  
-};
+
 
 
 // Function: Handles Map hover, click, loading modal
@@ -339,7 +369,6 @@ var mapEventSetter = function(){
            stateGifHolder.setAttribute("src", loadingGif);
       
       }); // End mouseover function
-      
       
       
     // Mouseout event handler
@@ -446,7 +475,8 @@ var openAboutModal = function(){
       
         makeMapValuesIntoDropdown();
       
-          loadStateonSelect();
+        loadStateonSelect();
+        
       // Here you pass a callback function as a parameter to `updateCoordinate`.
       
       getOurLocation(function (loc) {
