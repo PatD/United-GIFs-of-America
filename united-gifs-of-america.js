@@ -1,6 +1,9 @@
 // Punch List
 /*
 
+Safari - no mapchild.children support.  Polyfill?
+
+
 Can we load lower size on mobile?  Make mobile an object/var?
 
 
@@ -11,6 +14,15 @@ Resize screen - refire Modal
 loading screen on mobile Modal
 Update URL with state
 
+
+
+
+
+GPS find takes too long - loading gif?
+Boostrap fails to load - move local
+
+IE11 can't figure out mapchild.length.
+If IE, just show mobile version
 
 */
 
@@ -60,6 +72,10 @@ var usersHomeState = "America";
   
   // Selects all the child nodes of SVGMAP
   var mapchild = svgamericamap.children;
+  
+  console.log("children is " + svgamericamap.children.length);
+  console.log("childnodes is " + svgamericamap.childNodes.length);
+  
   
   // State name text node
   var stateNameHeader = document.getElementById("stateNameHeader");
