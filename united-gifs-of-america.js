@@ -1,8 +1,10 @@
 // Punch List
 /*
 
-Safari - no mapchild.children support.  Polyfill?
 
+
+
+768 is breakpoint, md
 
 Can we load lower size on mobile?  Make mobile an object/var?
 
@@ -71,10 +73,12 @@ var usersHomeState = "America";
   const svgamericamap = document.getElementById("SVGAMERICA");
   
   // Selects all the child nodes of SVGMAP
-  var mapchild = svgamericamap.children;
+  //var mapchild = svgamericamap.children;
+  var mapchild = svgamericamap.getElementsByTagName('path');
   
-  console.log("children is " + svgamericamap.children.length);
-  console.log("childnodes is " + svgamericamap.childNodes.length);
+  
+  console.log("children is " + svgamericamap.children);
+  console.log("childnodes is " + svgamericamap.childNodes);
   
   
   // State name text node
@@ -272,6 +276,7 @@ var selectBoxSettoState = function(){
 
 // Function to create a dropdown from the values of the SVG map
 var makeMapValuesIntoDropdown = function(){
+
   
   // Shows GPS button if device has capability
   if(navigator.geolocation){
@@ -284,6 +289,8 @@ var makeMapValuesIntoDropdown = function(){
   
   // Loops through each state, gathers ID and name, puts in an <option> tag
   for(var i=0;i < mapchild.length; i++){
+    
+
 
     var _stateID = mapchild[i].getAttribute("data-id");
     var _stateName = mapchild[i].getAttribute("data-name");
@@ -480,7 +487,7 @@ var openAboutModal = function(){
     onLoadState();
        
     // For mobile, makes a dropdown
-      if(window.innerWidth < 1024){
+      if(window.innerWidth < 769){
       
         makeMapValuesIntoDropdown();
       

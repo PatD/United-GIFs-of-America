@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="IE=edge" http-equiv=X-UA-Compatible>
+<meta content="width=device-width,initial-scale=1" name=viewport>
 
   <title>
     🇺🇸
-    United GIFs of America | Find Your Official State GIF
+    United GIFs of America | Discover Your Official State GIF
     🇺🇸
   </title>
   
@@ -27,28 +27,19 @@
 <meta name="twitter:player" content="">
 
 
-
-
-
-
-
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ewert|Julius+Sans+One">
-<!-- link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Julius+Sans+One" -->
-
+<link rel="stylesheet" href="bootstrap.min.css">
 <link rel="stylesheet" href="united-gifs-of-america.css">
 
-<script>/*
-  (function(p,a,t,r,i,c,k){p['GoogleAnalyticsObject']=i;p[i]=p[i]||function(){
-  (p[i].q=p[i].q||[]).push(arguments)},p[i].l=1*new Date();c=a.createElement(t),
-  k=a.getElementsByTagName(t)[0];c.async=1;c.src=r;k.parentNode.insertBefore(c,k)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
   ga('create', 'UA-90031604-1', 'auto');
   ga('send', 'pageview');
-*/</script>
+</script>
     
 </head>
   
@@ -64,14 +55,11 @@
   </header> 
 
 
-
-
   <main id="main" class="container" aria-label="Content">
     
     <!-- Dropdown used for mobile users. Not shown for desktop -->
-    <div class="selectBoxHolder hidden-md-up">
+    <div class="selectBoxHolder hidden-sm-up">
       <select id="fiftyStatesDropdown" name="fiftyStatesDropdown" class="form-control"></select>
-      
       
       
       <div id="geoLocationBlock" class="col-md-4 text-center"> 
@@ -90,9 +78,9 @@
   
     <div style="margin-top:-30px;margin-bottom:30px" class="row hidden-xs-down">
       <div class="col">
-         <h3 id="stateNameHeader" class="hidden-xs-down">State Name</h3>
+         <h3 id="stateNameHeader" class="hidden-sm-down">State Name</h3>
    
-        <svg viewbox="115 0 930 580" preserveAspectRatio xmlns="http://www.w3.org/2000/svg">
+        <svg viewbox="115 0 930 580" class="hidden-xs-down" xmlns="http://www.w3.org/2000/svg">
   
     <defs>
         <filter id="dropshadow" height="130%">
@@ -109,7 +97,7 @@
         </pattern>
       </defs>
       
-      <g id="SVGAMERICA" filter="url(#dropshadow)">
+      <g id="SVGAMERICA" fialter="url(#dropshadow)">
       <path
          id="MA"
          data-name="Massachusetts"
@@ -517,7 +505,7 @@
               <div class="col-md-8"><img src="#" id="stateGifHolder" alt="My Official State GIF!"></div>
               <div class="col-md-4">
                 <p>A search of GIFs on Giphy.com has determined that this GIF, above all, is the Official State GIF of the great state of <strong id="stateInlineforModal">this state</strong>. <br /></p>
-                <button id="myOfficialStateSaver" type="button" class="btn btn-success">Save as my Official State Gif</button>
+                <button id="myOfficialStateSaver" type="button" class="btn btn-success">Save My State</button>
                 
                 
                 <p><br /><em><span class="text-danger">*</span> <small>Not actually official. Yet.</small></em></p>

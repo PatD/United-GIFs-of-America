@@ -60,12 +60,9 @@ main #geoLocationBlock {visibility:hidden;}
 main #getGPScoordsButton {font-family: 'Julius Sans One', sans-serif}
 main #geoLoadingIcon {display:none;}
 
-svg {}
-
 main g {cursor:pointer;}
 
 path{stroke:blue}
-
 
 
 footer {text-align:center;margin-top:80px;}
@@ -87,8 +84,7 @@ footer small .text-primary{text-decoration:underline;cursor:pointer;}
 
 
 
-
-
+/* Modal style */
 
 h5.modal-title{font-family: 'Ewert', cursive;font-size:1.75em;line-height:1em;}
 h5.modal-title span {color:red;}
