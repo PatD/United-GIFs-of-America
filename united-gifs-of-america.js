@@ -2,29 +2,11 @@
 /*
 
 
-
-fireworks animation on Save
-
-Mobile save - put star next to state?
-
-Can we load lower size on mobile?  Make mobile an object/var?
-
-
-Modal - Load thumbnail first w/loading on top
-
-Resize screen - refire Modal
 loading screen on mobile Modal
 Update URL with state
 
+svg MS Edge broke
 
-
-
-
-GPS find takes too long - loading gif?
-Boostrap fails to load - move local
-
-IE11 can't figure out mapchild.length.
-If IE, just show mobile version
 
 */
 
@@ -110,11 +92,11 @@ var onLoadState = function(){
     onLoadFavoriteStateNode.setAttribute("favorite", "true");
     onLoadFavoriteStateNode.setAttribute("fill", mapColorFavorite);
   
-    console.log("Local storage has stuff it in!");
+    // console.log("Local storage has stuff it in!");
   }
   // If it's empty
   else{
-      console.log("Local Storage is null or undefined");
+     // console.log("Local Storage is null or undefined");
    
   };
 };
@@ -141,7 +123,7 @@ var makeStateUnfavorite = function(){
 var markSavedonButton = function(){
   saveButton.className = 'btn btn-primary';
   saveButton.setAttribute('disabled',true);
-  saveButton.textContent = '✅ Saved!';
+  saveButton.textContent = 'Saved!';
 };
 
 // Function: Marks the 'Save As Favorite' button saved
@@ -181,8 +163,7 @@ var savemyState = function(passedStateName, passedStateID){
         // The state which we just selected to be favorite, color it in!
         var mySelectedStateID = document.getElementById(passedStateID);
         
-        console.log(passedStateID);
-        
+        // Colors in our fav state
         mySelectedStateID.setAttribute("fill", mapColorFavorite);
     
         // This state we just selected to be favorite, add an attribute mark it so
@@ -351,7 +332,6 @@ var mapEventSetter = function(){
     // Mouseover event handler
       mapchild[i].addEventListener("mouseover", function(){
   
-
           var stateFullName = this.getAttribute("data-name");
           
           // sets text header to state name
@@ -424,7 +404,7 @@ var getGif = function(stateFullName){
         
         else{
           // Error handling
-         console.log("Loading GIF from giphy");
+        // console.log("Loading GIF from giphy");
         }
       };
   
