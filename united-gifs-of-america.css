@@ -65,6 +65,8 @@ main g {cursor:pointer;}
 path{stroke:blue}
 
 
+path:hover{fill:#ff0000;}
+
 footer {text-align:center;margin-top:80px;}
 
 footer img{margin-top:30px;}

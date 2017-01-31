@@ -3,13 +3,13 @@
 
 
 
+fireworks animation on Save
 
-768 is breakpoint, md
+Mobile save - put star next to state?
 
 Can we load lower size on mobile?  Make mobile an object/var?
 
 
-gzip!
 Modal - Load thumbnail first w/loading on top
 
 Resize screen - refire Modal
@@ -77,10 +77,6 @@ var usersHomeState = "America";
   var mapchild = svgamericamap.getElementsByTagName('path');
   
   
-  console.log("children is " + svgamericamap.children);
-  console.log("childnodes is " + svgamericamap.childNodes);
-  
-  
   // State name text node
   var stateNameHeader = document.getElementById("stateNameHeader");
   var stateNameInline = document.getElementById("stateInlineforModal");
@@ -97,7 +93,6 @@ var usersHomeState = "America";
   
   // Default fills color of SVG Map
   const mapColor = "#fff";
-  const mapColorHover = "#ff0000";
   const mapColorFavorite = "url(#favoriteStateBackgroundImage)";
 
 
@@ -209,17 +204,14 @@ var getOurLocation = function(loc) {
   
   getGPScoordsButton.addEventListener("click",function(){ 
   
-    console.log("Geo clicked")
-  
     if(document.documentElement.clientWidth < 1024 && navigator.geolocation){
     
       // Shows loading icon
-      geoLoadingIcon.style.cssText="display:block;"
+      geoLoadingIcon.style.cssText="display:block;";
     
       navigator.geolocation.getCurrentPosition(
         
         function (position) {
-         // console.log(position);
           var returnValue = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
@@ -257,7 +249,7 @@ var getOurState = function(){
         selectBoxSettoState(usersHomeState);
         
         // Hide loading icon
-        geoLoadingIcon.style.cssText="display:none;"
+        geoLoadingIcon.style.cssText="display:none;";
     };
   };
 
@@ -290,8 +282,6 @@ var makeMapValuesIntoDropdown = function(){
   // Loops through each state, gathers ID and name, puts in an <option> tag
   for(var i=0;i < mapchild.length; i++){
     
-
-
     var _stateID = mapchild[i].getAttribute("data-id");
     var _stateName = mapchild[i].getAttribute("data-name");
     var _stateOptionNode = "<option value=" + _stateID + ">" + _stateName + "</option>";
@@ -311,9 +301,7 @@ var makeMapValuesIntoDropdown = function(){
 
 // Function: Fires when select-optioned or clicked to show a GIF
 var loadLauncher = function(statePassed, stateIDPassed){
-  
-  // console.log("state passed is " + statePassed + "and ID is " + stateIDPassed);
-  
+
   // Clears already loaded GIF if there is one
   // So it doesn't show up accidentally for fast-clickers
   stateGifHolder.setAttribute("src", loadingGif);
@@ -362,12 +350,7 @@ var mapEventSetter = function(){
 
     // Mouseover event handler
       mapchild[i].addEventListener("mouseover", function(){
-        
-          // Sets background color of state
-          // if it's not our favorite
-          if(!this.hasAttribute("favorite")){
-            this.setAttribute("fill",mapColorHover);
-          };
+  
 
           var stateFullName = this.getAttribute("data-name");
           
@@ -375,17 +358,14 @@ var mapEventSetter = function(){
           stateNameHeader.textContent = stateFullName;
           
           // Clears already loaded GIF if there is one
-           stateGifHolder.setAttribute("src", loadingGif);
+          stateGifHolder.setAttribute("src", loadingGif);
       
       }); // End mouseover function
       
       
     // Mouseout event handler
       mapchild[i].addEventListener("mouseout", function(){
-        if(!this.hasAttribute("favorite")){
-          this.setAttribute("fill",mapColor);
-        };
-      
+
         var stateFullName = this.getAttribute("data-name");
         
         // removes state name from h2
@@ -399,16 +379,11 @@ var mapEventSetter = function(){
         // What the state and ID are here:
         stateFullName = this.getAttribute("data-name");
         stateID = this.getAttribute("data-id");
-         
-         
-        // console.log("Click event:" + stateFullName + stateID) 
         
         loadLauncher(stateFullName,stateID);
 
         // pass name to getGif function
         getGif(stateFullName);
-        
-        this.setAttribute("fill",mapColorHover);
         
        });
      
@@ -431,15 +406,14 @@ var getGif = function(stateFullName){
       if (this.readyState == 4 && this.status == 200) {
        
         var returnedGifs = JSON.parse(this.responseText);
-        
+
         // Actual GIF
         var mainGif = returnedGifs.data[0].images.original.url;
       
         // Title in modal:
         stateTitleforModal.innerHTML=stateFullName;
         stateNameInline.innerHTML=stateFullName;
-        
-         
+
         // Sets SRC of image in Modal to value from GIFFY feed
         stateGifHolder.setAttribute("src",mainGif);
          
