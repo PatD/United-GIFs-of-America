@@ -1,18 +1,3 @@
-// Punch List
-/*
-
-
-loading screen on mobile Modal
-Update URL with state
-
-svg MS Edge broke
-
-
-*/
-
-
-
-
 // Global currently active Name and ID
 // Shared between select and map clickers
 var stateFullName;
