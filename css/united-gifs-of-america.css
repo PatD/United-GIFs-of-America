@@ -1,4 +1,4 @@
-body{background:url('const-small.jpg') top left;}
+body{background:url('../const-small.jpg') top left;}
 
 
 header{
@@ -42,7 +42,6 @@ h2{
 }
 
 
-
 main select{
   box-shadow:0px 1px 1px #444;
   margin-bottom:50px;
@@ -53,7 +52,6 @@ main label{
   font-weight:bold;
   text-align:center;
 }
-
 
 
 main #geoLocationBlock {visibility:hidden;}
@@ -127,22 +125,16 @@ h5.modal-title span {color:red;}
   
   
   
-  
   #myOfficialStateSaver{margin-top:30px;}
   
   
-  
-  
-  
-  
-  
-  
+
   
   /* Fixed footer */
 footer{
   text-align: left;
   margin-top:0;
-  position: fixed !important;
+  position: fixed !important; /* Deal with it */
   bottom:0;
   left: 0;
   right:0;
