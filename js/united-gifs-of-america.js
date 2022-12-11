@@ -357,12 +357,12 @@ var mapEventSetter = function(){
 };  
     
 
-// Service that loads from Giffy.  Expects name of state as paramter
+// Service that loads from Giphy.  Expects name of state as parameter.
 // Also handles modal
   
 var getGif = function(stateFullName){
     
-    const apiKey = "dc6zaTOxFJmzC";
+    const apiKey = "aVQW6huGskVxySOEzHumpxui59sYsGmX";
     var stateFullName = stateFullName;
     const loadGifs = new XMLHttpRequest();
 
@@ -408,7 +408,7 @@ var openAboutModal = function(){
     var _imageSrc = aboutModalImage.getAttribute("data-src");
     aboutModalImage.setAttribute("src",_imageSrc);
     
-    // Boostrap Modal load
+    // Bootstrap Modal load
     $('#aboutModal').modal('show')
   });  
 };
